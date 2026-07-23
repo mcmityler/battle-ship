@@ -1,2 +1,3 @@
-# template-webpack
-Template for building websites using webpack
+# Battle Ship Game
+
+Battleship game for browsers. Made with HTML,CSS, and JS; to practice the concepts I have learned thus far from TOP
