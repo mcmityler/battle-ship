@@ -4,6 +4,7 @@ export class Ship {
     this.numHits = 0;
     this.direction = [1, 0];
     this.shipName = myName;
+    this.isPlaced = false;
   }
   hit() {
     this.numHits++;
@@ -14,6 +15,9 @@ export class Ship {
       return true;
     }
     return false;
+  }
+  place() {
+    this.isPlaced = true;
   }
   setDirection(myDir) {
     //[1,0] is to right [-1,0] to left

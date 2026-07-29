@@ -13,6 +13,7 @@ export default {
     new HtmlWebpackPlugin({
       title: "Production",
       template: "./src/template.html",
+      scriptLoading: "defer",
     }),
   ],
   output: {

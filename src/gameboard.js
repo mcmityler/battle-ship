@@ -8,6 +8,11 @@ export class Gameboard {
     this.grid = [[]];
     this.shipList = [];
     this.initializeGrid();
+    this.carrier = new Ship(5, "Carrier");
+    this.battleship = new Ship(4, "Battleship");
+    this.cruiser = new Ship(3, "Cruiser");
+    this.submarine = new Ship(3, "Submarine");
+    this.destroyer = new Ship(2, "Destroyer");
   }
   initializeGrid() {
     for (let i = 0; i < this.gridSize; i++) {
@@ -39,6 +44,10 @@ export class Gameboard {
     //check if ship goes off grid of position depending on direction placed
     const isValid = this.isAvailableSpot(myShip, myPos);
     if (isValid !== "available") return isValid;
+
+    //check if the ship piece has been placed yet
+    if (myShip.isPlaced === true) return "used";
+
     //all spots are available so add the ship to these spaces..
     for (let j = 0; j < myShip.myLength; j++) {
       this.grid[posX][posY].setShip(myShip);
@@ -46,6 +55,7 @@ export class Gameboard {
       posY += myShip.direction[1];
     }
     this.shipList.push(myShip); //add to the list of ships
+    myShip.place();
     return "placed";
   }
   receiveAttack([attackX, attackY]) {
