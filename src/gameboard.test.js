@@ -32,6 +32,16 @@ describe("Receive Attack Component", () => {
   });
   test("third attack of the ship size 3 should return 'sunk' instead of 'hit'", () => {
     gameboard.receiveAttack([1, 0]);
-    expect(gameboard.receiveAttack([2, 0])).toBe("sunk");
+    expect(gameboard.receiveAttack([2, 0])).toBe("sunkAll");
+  });
+});
+describe("Check Sunk all component", () => {
+  test("check if all the ships on the board are sunk, should return true", () => {
+    expect(gameboard.checkSunkAll()).toBe(true);
+  });
+  test("check if all the ships on the board are sunk, should return false since added new ship", () => {
+    const myShip = new Ship(3);
+    gameboard.placeShip(myShip, [3, 0]); //ship placed at (3,0) + (3,1) + (3,2)
+    expect(gameboard.checkSunkAll()).toBe(false);
   });
 });

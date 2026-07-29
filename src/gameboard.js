@@ -6,6 +6,7 @@ export class Gameboard {
     this.spotsMissed = [];
     this.gridSize = 10;
     this.grid = [[]];
+    this.shipList = [];
     this.initializeGrid();
   }
   initializeGrid() {
@@ -37,6 +38,7 @@ export class Gameboard {
       posY -= myShip.direction[1];
       this.grid[posX][posY].setShip(myShip);
     }
+    this.shipList.push(myShip); //add to the list of ships
     return "placed";
   }
   receiveAttack([attackX, attackY]) {
@@ -48,21 +50,40 @@ export class Gameboard {
     //already hit
     if (this.grid[attackX][attackY].checkHit()) return "repeat";
 
-    //hit this spot on the gameboard grid
+    //can hit this spot on the gameboard grid
     this.grid[attackX][attackY].hit();
-    //has ship
+    //has ship on space
     if (this.grid[attackX][attackY].shipOccupying !== null) {
       this.spotsHit.push([attackX, attackY]);
       if (this.grid[attackX][attackY].shipOccupying.checkSunk()) {
+        console.log(
+          "You hit & sunk the " +
+            this.grid[attackX][attackY].shipOccupying.getName(),
+        );
+        if (this.checkSunkAll() === true) {
+          console.log("Sunk all ships game over");
+          return "sunkAll";
+        }
         return "sunk";
       }
+      console.log(
+        "You hit the " + this.grid[attackX][attackY].shipOccupying.getName(),
+      );
       return "hit";
     }
-    //no ship
+    //no ship on space
     else {
       this.spotsMissed.push([attackX, attackY]);
       return "miss";
     }
+  }
+  checkSunkAll() {
+    for (let i = 0; i < this.shipList.length; i++) {
+      if (this.shipList[i].checkSunk() === false) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 class GameSpace {
