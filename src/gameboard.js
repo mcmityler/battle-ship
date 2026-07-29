@@ -48,10 +48,18 @@ export class Gameboard {
     //already hit
     if (this.grid[attackX][attackY].checkHit()) return "repeat";
 
+    //hit this spot on the gameboard grid
+    this.grid[attackX][attackY].hit();
+    //has ship
     if (this.grid[attackX][attackY].shipOccupying !== null) {
       this.spotsHit.push([attackX, attackY]);
+      if (this.grid[attackX][attackY].shipOccupying.checkSunk()) {
+        return "sunk";
+      }
       return "hit";
-    } else {
+    }
+    //no ship
+    else {
       this.spotsMissed.push([attackX, attackY]);
       return "miss";
     }

@@ -20,7 +20,7 @@ describe("Place Ship Component", () => {
     expect(gameboard.placeShip(myShip, [0, 0])).toBe("occupied");
   });
 });
-describe("Place Ship Component", () => {
+describe("Receive Attack Component", () => {
   test("try to attack a spot off the board, should throw off board error", () => {
     expect(gameboard.receiveAttack([10, 10])).toBe("off-board");
   });
@@ -29,5 +29,9 @@ describe("Place Ship Component", () => {
   });
   test("try to attack a spot without a ship on the board, should return 'miss'", () => {
     expect(gameboard.receiveAttack([8, 0])).toBe("miss");
+  });
+  test("third attack of the ship size 3 should return 'sunk' instead of 'hit'", () => {
+    gameboard.receiveAttack([1, 0]);
+    expect(gameboard.receiveAttack([2, 0])).toBe("sunk");
   });
 });
