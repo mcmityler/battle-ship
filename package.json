@@ -2,7 +2,7 @@
   "name": "template-webpack",
   "version": "1.0.0",
   "description": "Template for building websites using webpack",
-  "main": "index.js",
+  "main": "gameManager.js",
   "scripts": {
     "test": "jest",
     "build": "webpack --config webpack.prod.js",
