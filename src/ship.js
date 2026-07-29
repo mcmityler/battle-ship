@@ -1,13 +1,11 @@
 export class Ship {
   constructor(myLength = 1) {
     this.myLength = myLength;
-    this.isSunk = false;
     this.numHits = 0;
     this.direction = [1, 0];
   }
   hit() {
     this.numHits++;
-    this.isSunk = this.checkSunk();
   }
   checkSunk() {
     if (this.numHits >= this.myLength) {

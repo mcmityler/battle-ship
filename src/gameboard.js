@@ -21,11 +21,12 @@ export class Gameboard {
     //check if ship goes off grid of position depending on direction placed
     for (let i = 0; i < myShip.myLength; i++) {
       if (posX < 0 || posX >= 10 || posY < 0 || posY >= 10) {
-        throw new Error("Coordinates off board");
+        console.warn("Coordinates off board");
+        return "off-board";
       }
       if (this.grid[posX][posY].shipOccupying != null) {
         //already has a ship in this space
-        return false;
+        return "occupied";
       }
       posX += myShip.direction[0];
       posY += myShip.direction[1];
@@ -36,22 +37,23 @@ export class Gameboard {
       posY -= myShip.direction[1];
       this.grid[posX][posY].setShip(myShip);
     }
-    return true;
+    return "placed";
   }
   receiveAttack([attackX, attackY]) {
     //doesnt exist on board
-    if (attackX < 0 || attackX >= 10 || attackY < 0 || attackY >= 10)
-      throw new Error("Coordinates off board");
+    if (attackX < 0 || attackX >= 10 || attackY < 0 || attackY >= 10) {
+      console.warn("Coordinates off board");
+      return "off-board";
+    }
     //already hit
-    if (this.grid[attackX][attackY].checkHit) return -1;
+    if (this.grid[attackX][attackY].checkHit()) return "repeat";
 
-    let hitShip = false;
-    if (hitShip === true) {
-      //   this.spotsHit.push(attackPos);
-      return 1;
+    if (this.grid[attackX][attackY].shipOccupying !== null) {
+      this.spotsHit.push([attackX, attackY]);
+      return "hit";
     } else {
-      //   this.spotsMissed.push(attackPos);
-      return 0;
+      this.spotsMissed.push([attackX, attackY]);
+      return "miss";
     }
   }
 }
@@ -73,11 +75,11 @@ class GameSpace {
     }
   }
 }
-const gb = new Gameboard();
+// const gb = new Gameboard();
 
-const ship1 = new Ship(3);
+// const ship1 = new Ship(3);
 
-console.log(gb.placeShip(ship1, [0, 0]));
+// console.log(gb.placeShip(ship1, [0, 0]));
 
-console.log(ship1);
-console.log(gb.grid);
+// console.log(ship1);
+// console.log(gb.grid);
