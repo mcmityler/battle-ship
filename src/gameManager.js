@@ -51,7 +51,10 @@ class GameManager {
     const [x, y, type] = myID.split(" ");
     console.log(`(${x},${y}) - ${type}` + " cell clicked");
     //if x,y-shot
-
+    if (type === "shot") {
+      //check if it was a hit on a ship or a miss or already clicked.
+      document.getElementById(`${x} ${y} shot`).classList.add("miss");
+    }
     //if x,y-ship
   }
 }

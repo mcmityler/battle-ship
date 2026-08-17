@@ -20,3 +20,15 @@ test("change the direction the ship is facing to (0,-1)", () => {
   ship.setDirection([0, -1]);
   expect(ship.direction).toEqual([0, -1]);
 });
+
+test("change the name of the ship to 'happy'", () => {
+  //to equal since its an array
+  ship.setName("happy");
+  expect(ship.getName()).toBe("happy");
+});
+
+test("set the ship to be placed", () => {
+  //to equal since its an array
+  ship.place();
+  expect(ship.isPlaced).toBe(true);
+});
