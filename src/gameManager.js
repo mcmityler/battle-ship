@@ -1,8 +1,8 @@
 import "./styles.css";
 import { Player } from "./player.js";
 import { Gameboard } from "./gameboard.js";
-const shipRows = document.querySelectorAll(".shipRow");
-const shotRows = document.querySelectorAll(".shotRow");
+const shipRowContainer = document.querySelector(".ship-grid-container");
+const shotRowContainer = document.querySelector(".shot-grid-container");
 class GameManager {
   constructor() {
     this.player1 = new Player();
@@ -14,28 +14,37 @@ class GameManager {
   }
   initializeGridButtons() {
     for (let i = 0; i < this.gridSize; i++) {
+      //create rows to put buttons on in html
+      const shipRow = document.createElement("div");
+      const shotRow = document.createElement("div");
+
+      //holds all buttons to be referenced later if need to loop all of them
       this.shipBoard[i] = [];
-      for (let j = 0; j < this.gridSize; j++) {
-        const gameButton = document.createElement("button");
-        gameButton.setAttribute("id", `${j} ${i} ship`);
-        gameButton.classList.add("game-button");
-        gameButton.addEventListener("click", () => {
-          this.gridcellClick(gameButton.id);
-        });
-        shipRows[i].appendChild(gameButton);
-        this.shipBoard[i][j] = gameButton;
-      }
       this.shotBoard[i] = [];
+
       for (let j = 0; j < this.gridSize; j++) {
-        const gameButton = document.createElement("button");
-        gameButton.setAttribute("id", `${j} ${i} shot`);
-        gameButton.classList.add("game-button");
-        gameButton.addEventListener("click", () => {
-          this.gridcellClick(gameButton.id);
+        //create ship buttons (top screen)
+        const shipButton = document.createElement("button");
+        shipButton.setAttribute("id", `${j} ${i} ship`);
+        shipButton.classList.add("game-button");
+        shipButton.addEventListener("click", () => {
+          this.gridcellClick(shipButton.id);
         });
-        shotRows[i].appendChild(gameButton);
-        this.shotBoard[i][j] = gameButton;
+        shipRow.appendChild(shipButton);
+        this.shipBoard[i][j] = shipButton;
+
+        //create shot buttons (bot screen)
+        const shotButton = document.createElement("button");
+        shotButton.setAttribute("id", `${j} ${i} shot`);
+        shotButton.classList.add("game-button");
+        shotButton.addEventListener("click", () => {
+          this.gridcellClick(shotButton.id);
+        });
+        shotRow.appendChild(shotButton);
+        this.shotBoard[i][j] = shotButton;
       }
+      shipRowContainer.appendChild(shipRow);
+      shotRowContainer.appendChild(shotRow);
     }
   }
   gridcellClick(myID) {
