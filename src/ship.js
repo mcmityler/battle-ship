@@ -2,7 +2,7 @@ export class Ship {
   constructor(myLength = 1, myName = "Destroyer") {
     this.myLength = myLength;
     this.numHits = 0;
-    this.direction = [1, 0];
+    this.direction = [0, 1];
     this.shipName = myName;
     this.isPlaced = false;
   }

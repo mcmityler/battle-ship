@@ -17,7 +17,7 @@ describe("Place Ship Component", () => {
   });
   test("try to place a ship where a ship already is, should return 'occupied'", () => {
     const myShip = new Ship(3);
-    expect(gameboard.placeShip(myShip, [0, 0])).toBe("occupied");
+    expect(gameboard.placeShip(myShip, [2, 0])).toBe("occupied");
   });
 });
 describe("Receive Attack Component", () => {
