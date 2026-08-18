@@ -73,12 +73,24 @@ class GameManager {
         document.getElementById(`${y} ${x} shot`).classList.add("hit");
       } else if (shotResult === "sunk" || shotResult === "sunkAll") {
         //cycle over the ships cells and turn them all into sunk
-        const shipLength =
-          this.player2.playerBoard.grid[y][x].shipOccupying.myLength;
-        const startingCord =
-          this.player2.playerBoard.grid[y][x].shipOccupying.startCell;
-        const direction =
-          this.player2.playerBoard.grid[y][x].shipOccupying.direction;
+        let shipLength = 0;
+        let startingCord = [];
+        let direction = [];
+        if (this.playersTurn === 1) {
+          shipLength =
+            this.player2.playerBoard.grid[y][x].shipOccupying.myLength;
+          startingCord =
+            this.player2.playerBoard.grid[y][x].shipOccupying.startCell;
+          direction =
+            this.player2.playerBoard.grid[y][x].shipOccupying.direction;
+        } else if (this.playersTurn === 2) {
+          shipLength =
+            this.player2.playerBoard.grid[y][x].shipOccupying.myLength;
+          startingCord =
+            this.player2.playerBoard.grid[y][x].shipOccupying.startCell;
+          direction =
+            this.player2.playerBoard.grid[y][x].shipOccupying.direction;
+        }
         for (let i = 0; i < shipLength; i++) {
           document
             .getElementById(
@@ -87,6 +99,9 @@ class GameManager {
             .classList.add("sunk");
         }
       }
+      this.playersTurn === 1 ? (this.playersTurn = 2) : (this.playersTurn = 1);
+      this.showShips();
+      this.showHitBoard();
     }
     //if y,x-ship
   }
@@ -158,6 +173,54 @@ class GameManager {
           }
         }
       }
+    }
+  }
+  showHitBoard() {
+    for (let y = 0; y < 10; y++) {
+      for (let x = 0; x < 10; x++) {
+        //erase all class list on board
+        this.shotBoard[y][x].classList = "game-button";
+      }
+    }
+    if (this.playersTurn === 1) {
+      //show player 1's hits and misses and sunk
+      this.player2.playerBoard.spotsHit.forEach((element) => {
+        const [y, x] = element;
+        //check if sunk or just a hit
+        if (
+          this.player2.playerBoard.grid[y][x].shipOccupying.checkSunk() === true
+        ) {
+          this.shotBoard[y][x].classList.add("sunk");
+        } else {
+          this.shotBoard[y][x].classList.add("hit");
+        }
+        console.log(element + "HEY THERE");
+      });
+      this.player2.playerBoard.spotsMissed.forEach((element) => {
+        const [y, x] = element;
+
+        this.shotBoard[y][x].classList.add("miss");
+      });
+    }
+    if (this.playersTurn === 2) {
+      //show player 2's hits and misses and sunk
+      this.player1.playerBoard.spotsHit.forEach((element) => {
+        const [y, x] = element;
+        //check if sunk or just a hit
+        if (
+          this.player1.playerBoard.grid[y][x].shipOccupying.checkSunk() === true
+        ) {
+          this.shotBoard[y][x].classList.add("sunk");
+        } else {
+          this.shotBoard[y][x].classList.add("hit");
+        }
+        console.log(element + "HEY THERE");
+      });
+      this.player1.playerBoard.spotsMissed.forEach((element) => {
+        const [y, x] = element;
+
+        this.shotBoard[y][x].classList.add("miss");
+      });
     }
   }
 }
