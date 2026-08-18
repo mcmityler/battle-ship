@@ -102,7 +102,6 @@ class GameManager {
             .classList.add("sunk");
         }
       }
-      this.changeTurns();
     }
     //if y,x-ship
   }
@@ -113,49 +112,49 @@ class GameManager {
       this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
     );
   }
+  randomShipPlacement(myShip, currentPlayer) {
+    const directions = [
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ];
+    while (myShip.isPlaced === false) {
+      console.log("hey");
+      myShip.setDirection(directions[Math.floor(Math.random() * 4)]);
+      currentPlayer.playerBoard.placeShip(myShip, [
+        Math.floor(Math.random() * 10),
+        Math.floor(Math.random() * 10),
+      ]);
+    }
+  }
+  randomizeBoard(playerToRandomize) {
+    playerToRandomize.playerBoard.initializeGrid();
+    this.randomShipPlacement(
+      playerToRandomize.playerBoard.carrier,
+      playerToRandomize,
+    );
+    this.randomShipPlacement(
+      playerToRandomize.playerBoard.battleship,
+      playerToRandomize,
+    );
+    this.randomShipPlacement(
+      playerToRandomize.playerBoard.cruiser,
+      playerToRandomize,
+    );
+    this.randomShipPlacement(
+      playerToRandomize.playerBoard.submarine,
+      playerToRandomize,
+    );
+    this.randomShipPlacement(
+      playerToRandomize.playerBoard.destroyer,
+      playerToRandomize,
+    );
+  }
   populateBoard() {
     //populates using (y,x) coordinates
-    this.player1.playerBoard.placeShip(
-      this.player1.playerBoard.carrier,
-      [0, 0],
-    );
-    this.player1.playerBoard.placeShip(
-      this.player1.playerBoard.battleship,
-      [2, 0],
-    );
-    this.player1.playerBoard.placeShip(
-      this.player1.playerBoard.cruiser,
-      [4, 0],
-    );
-    this.player1.playerBoard.placeShip(
-      this.player1.playerBoard.submarine,
-      [6, 0],
-    );
-    this.player1.playerBoard.placeShip(
-      this.player1.playerBoard.destroyer,
-      [8, 0],
-    );
-
-    this.player2.playerBoard.placeShip(
-      this.player2.playerBoard.carrier,
-      [1, 0],
-    );
-    this.player2.playerBoard.placeShip(
-      this.player2.playerBoard.battleship,
-      [2, 0],
-    );
-    this.player2.playerBoard.placeShip(
-      this.player2.playerBoard.cruiser,
-      [3, 0],
-    );
-    this.player2.playerBoard.placeShip(
-      this.player2.playerBoard.submarine,
-      [4, 0],
-    );
-    this.player2.playerBoard.placeShip(
-      this.player2.playerBoard.destroyer,
-      [5, 0],
-    );
+    this.randomizeBoard(this.player1);
+    this.randomizeBoard(this.player2);
   }
   displayBoard(currentPlayer, opponentPlayer) {
     for (let y = 0; y < 10; y++) {
@@ -164,13 +163,14 @@ class GameManager {
         this.shipBoard[y][x].classList = "game-button";
         //display where ships are located
         if (currentPlayer.playerBoard.grid[y][x].shipOccupying !== null) {
-          console.log(currentPlayer.playerBoard.grid[y][x].shipOccupying);
+          // console.log(currentPlayer.playerBoard.grid[y][x].shipOccupying);
           this.shipBoard[y][x].classList.add("ship");
         }
         //erase all class list on shot board
         this.shotBoard[y][x].classList = "game-button";
       }
     }
+    //Display where OPPONENT hit on YOUR ship board
     currentPlayer.playerBoard.spotsHit.forEach((element) => {
       const [y, x] = element;
       //check if sunk or just a hit
@@ -186,6 +186,7 @@ class GameManager {
       const [y, x] = element;
       this.shipBoard[y][x].classList.add("miss");
     });
+    //Display where YOU hit on the OPPONENT board
     opponentPlayer.playerBoard.spotsHit.forEach((element) => {
       const [y, x] = element;
       //check if sunk or just a hit

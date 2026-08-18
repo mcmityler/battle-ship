@@ -15,6 +15,7 @@ export class Gameboard {
     this.destroyer = new Ship(2, "Destroyer");
   }
   initializeGrid() {
+    this.grid = [];
     for (let i = 0; i < this.gridSize; i++) {
       this.grid[i] = [];
       for (let j = 0; j < this.gridSize; j++) {
