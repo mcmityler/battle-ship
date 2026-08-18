@@ -12,11 +12,15 @@ class GameManager {
     this.gridSize = 10;
     this.initializeGridButtons();
     this.playersTurn = 1;
+    this.nextTurn = false; //is it the next persons turn
     this.populateBoard();
     this.displayBoard(
       this.playersTurn === 1 ? this.player1 : this.player2, //current player
       this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
     );
+    this.changeTurnButton = document.querySelector(".turn-change-button");
+    this.changeTurnButton.classList.add("hidden");
+    this.changeTurnButton.addEventListener("click", () => this.changeTurns());
   }
   initializeGridButtons() {
     for (let y = 0; y < this.gridSize; y++) {
@@ -57,7 +61,7 @@ class GameManager {
     const [y, x, type] = myID.split(" ");
     console.log(`(Y:${y},X:${x}) - ${type}` + " cell clicked");
     //if y,x-shot
-    if (type === "shot") {
+    if (type === "shot" && this.nextTurn === false) {
       //result of what shot will be
       let shotResult = "";
       if (this.playersTurn === 1) {
@@ -67,41 +71,13 @@ class GameManager {
         shotResult = this.player1.playerBoard.receiveAttack([y, x]);
       }
       console.log(shotResult);
-      if (shotResult === "repeat") {
-        console.log("return repeat");
-        return;
-      } else if (shotResult === "miss") {
-        document.getElementById(`${y} ${x} shot`).classList.add("miss");
-      } else if (shotResult === "hit") {
-        document.getElementById(`${y} ${x} shot`).classList.add("hit");
-      } else if (shotResult === "sunk" || shotResult === "sunkAll") {
-        //cycle over the ships cells and turn them all into sunk
-        let shipLength = 0;
-        let startingCord = [];
-        let direction = [];
-        if (this.playersTurn === 1) {
-          shipLength =
-            this.player2.playerBoard.grid[y][x].shipOccupying.myLength;
-          startingCord =
-            this.player2.playerBoard.grid[y][x].shipOccupying.startCell;
-          direction =
-            this.player2.playerBoard.grid[y][x].shipOccupying.direction;
-        } else if (this.playersTurn === 2) {
-          shipLength =
-            this.player1.playerBoard.grid[y][x].shipOccupying.myLength;
-          startingCord =
-            this.player1.playerBoard.grid[y][x].shipOccupying.startCell;
-          direction =
-            this.player1.playerBoard.grid[y][x].shipOccupying.direction;
-        }
-        for (let i = 0; i < shipLength; i++) {
-          document
-            .getElementById(
-              `${startingCord[0] + direction[0] * i} ${startingCord[1] + direction[1] * i} shot`,
-            )
-            .classList.add("sunk");
-        }
-      }
+
+      this.displayBoard(
+        this.playersTurn === 1 ? this.player1 : this.player2,
+        this.playersTurn === 1 ? this.player2 : this.player1,
+      );
+      this.changeTurnButton.classList.remove("hidden");
+      this.nextTurn = true;
     }
     //if y,x-ship
   }
@@ -111,6 +87,7 @@ class GameManager {
       this.playersTurn === 1 ? this.player1 : this.player2, //current player
       this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
     );
+    this.nextTurn = false;
   }
   randomShipPlacement(myShip, currentPlayer) {
     const directions = [
