@@ -5,6 +5,7 @@ export class Ship {
     this.direction = [0, 1];
     this.shipName = myName;
     this.isPlaced = false;
+    this.startCell = [];
   }
   hit() {
     this.numHits++;
@@ -16,8 +17,9 @@ export class Ship {
     }
     return false;
   }
-  place() {
+  place(myPos) {
     this.isPlaced = true;
+    this.startCell = myPos;
   }
   setDirection(myDir) {
     //[1,0] is to right [-1,0] to left

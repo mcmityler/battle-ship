@@ -12,3 +12,6 @@ body {
 .miss {
   background-color: red;
 }
+.sunk {
+  background-color: greenyellow;
+}

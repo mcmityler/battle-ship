@@ -55,8 +55,38 @@ class GameManager {
     console.log(`(Y:${y},X:${x}) - ${type}` + " cell clicked");
     //if y,x-shot
     if (type === "shot") {
-      //check if it was a hit on a ship or a miss or already clicked.
-      document.getElementById(`${y} ${x} shot`).classList.add("miss");
+      //result of what shot will be
+      let shotResult = "";
+      if (this.playersTurn === 1) {
+        //if P1 turn attack P2 board and vice versa
+        shotResult = this.player2.playerBoard.receiveAttack([y, x]);
+      } else if (this.playersTurn === 2) {
+        shotResult = this.player1.playerBoard.receiveAttack([y, x]);
+      }
+      console.log(shotResult);
+      if (shotResult === "repeat") {
+        console.log("return repeat");
+        return;
+      } else if (shotResult === "miss") {
+        document.getElementById(`${y} ${x} shot`).classList.add("miss");
+      } else if (shotResult === "hit") {
+        document.getElementById(`${y} ${x} shot`).classList.add("hit");
+      } else if (shotResult === "sunk" || shotResult === "sunkAll") {
+        //cycle over the ships cells and turn them all into sunk
+        const shipLength =
+          this.player2.playerBoard.grid[y][x].shipOccupying.myLength;
+        const startingCord =
+          this.player2.playerBoard.grid[y][x].shipOccupying.startCell;
+        const direction =
+          this.player2.playerBoard.grid[y][x].shipOccupying.direction;
+        for (let i = 0; i < shipLength; i++) {
+          document
+            .getElementById(
+              `${startingCord[0] + direction[0] * i} ${startingCord[1] + direction[1] * i} shot`,
+            )
+            .classList.add("sunk");
+        }
+      }
     }
     //if y,x-ship
   }
