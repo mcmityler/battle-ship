@@ -13,7 +13,10 @@ class GameManager {
     this.initializeGridButtons();
     this.playersTurn = 1;
     this.populateBoard();
-    this.showShips();
+    this.displayBoard(
+      this.playersTurn === 1 ? this.player1 : this.player2, //current player
+      this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
+    );
   }
   initializeGridButtons() {
     for (let y = 0; y < this.gridSize; y++) {
@@ -85,11 +88,11 @@ class GameManager {
             this.player2.playerBoard.grid[y][x].shipOccupying.direction;
         } else if (this.playersTurn === 2) {
           shipLength =
-            this.player2.playerBoard.grid[y][x].shipOccupying.myLength;
+            this.player1.playerBoard.grid[y][x].shipOccupying.myLength;
           startingCord =
-            this.player2.playerBoard.grid[y][x].shipOccupying.startCell;
+            this.player1.playerBoard.grid[y][x].shipOccupying.startCell;
           direction =
-            this.player2.playerBoard.grid[y][x].shipOccupying.direction;
+            this.player1.playerBoard.grid[y][x].shipOccupying.direction;
         }
         for (let i = 0; i < shipLength; i++) {
           document
@@ -99,11 +102,16 @@ class GameManager {
             .classList.add("sunk");
         }
       }
-      this.playersTurn === 1 ? (this.playersTurn = 2) : (this.playersTurn = 1);
-      this.showShips();
-      this.showHitBoard();
+      this.changeTurns();
     }
     //if y,x-ship
+  }
+  changeTurns() {
+    this.playersTurn === 1 ? (this.playersTurn = 2) : (this.playersTurn = 1);
+    this.displayBoard(
+      this.playersTurn === 1 ? this.player1 : this.player2, //current player
+      this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
+    );
   }
   populateBoard() {
     //populates using (y,x) coordinates
@@ -149,79 +157,50 @@ class GameManager {
       [5, 0],
     );
   }
-  showShips() {
-    if (this.playersTurn === 1) {
-      //show player 1's ships in ship column
-      for (let y = 0; y < 10; y++) {
-        for (let x = 0; x < 10; x++) {
-          this.shipBoard[y][x].classList.remove("hit");
-          if (this.player1.playerBoard.grid[y][x].shipOccupying !== null) {
-            console.log(this.player1.playerBoard.grid[y][x].shipOccupying);
-            this.shipBoard[y][x].classList.add("hit");
-          }
-        }
-      }
-    }
-    if (this.playersTurn === 2) {
-      //show player 1's ships in ship column
-      for (let y = 0; y < 10; y++) {
-        for (let x = 0; x < 10; x++) {
-          this.shipBoard[y][x].classList.remove("hit");
-          if (this.player2.playerBoard.grid[y][x].shipOccupying !== null) {
-            console.log(this.player2.playerBoard.grid[y][x].shipOccupying);
-            this.shipBoard[y][x].classList.add("hit");
-          }
-        }
-      }
-    }
-  }
-  showHitBoard() {
+  displayBoard(currentPlayer, opponentPlayer) {
     for (let y = 0; y < 10; y++) {
       for (let x = 0; x < 10; x++) {
-        //erase all class list on board
+        //erase all class list on ship board
+        this.shipBoard[y][x].classList = "game-button";
+        //display where ships are located
+        if (currentPlayer.playerBoard.grid[y][x].shipOccupying !== null) {
+          console.log(currentPlayer.playerBoard.grid[y][x].shipOccupying);
+          this.shipBoard[y][x].classList.add("ship");
+        }
+        //erase all class list on shot board
         this.shotBoard[y][x].classList = "game-button";
       }
     }
-    if (this.playersTurn === 1) {
-      //show player 1's hits and misses and sunk
-      this.player2.playerBoard.spotsHit.forEach((element) => {
-        const [y, x] = element;
-        //check if sunk or just a hit
-        if (
-          this.player2.playerBoard.grid[y][x].shipOccupying.checkSunk() === true
-        ) {
-          this.shotBoard[y][x].classList.add("sunk");
-        } else {
-          this.shotBoard[y][x].classList.add("hit");
-        }
-        console.log(element + "HEY THERE");
-      });
-      this.player2.playerBoard.spotsMissed.forEach((element) => {
-        const [y, x] = element;
-
-        this.shotBoard[y][x].classList.add("miss");
-      });
-    }
-    if (this.playersTurn === 2) {
-      //show player 2's hits and misses and sunk
-      this.player1.playerBoard.spotsHit.forEach((element) => {
-        const [y, x] = element;
-        //check if sunk or just a hit
-        if (
-          this.player1.playerBoard.grid[y][x].shipOccupying.checkSunk() === true
-        ) {
-          this.shotBoard[y][x].classList.add("sunk");
-        } else {
-          this.shotBoard[y][x].classList.add("hit");
-        }
-        console.log(element + "HEY THERE");
-      });
-      this.player1.playerBoard.spotsMissed.forEach((element) => {
-        const [y, x] = element;
-
-        this.shotBoard[y][x].classList.add("miss");
-      });
-    }
+    currentPlayer.playerBoard.spotsHit.forEach((element) => {
+      const [y, x] = element;
+      //check if sunk or just a hit
+      if (
+        currentPlayer.playerBoard.grid[y][x].shipOccupying.checkSunk() === true
+      ) {
+        this.shipBoard[y][x].classList.add("sunk");
+      } else {
+        this.shipBoard[y][x].classList.add("hit");
+      }
+    });
+    currentPlayer.playerBoard.spotsMissed.forEach((element) => {
+      const [y, x] = element;
+      this.shipBoard[y][x].classList.add("miss");
+    });
+    opponentPlayer.playerBoard.spotsHit.forEach((element) => {
+      const [y, x] = element;
+      //check if sunk or just a hit
+      if (
+        opponentPlayer.playerBoard.grid[y][x].shipOccupying.checkSunk() === true
+      ) {
+        this.shotBoard[y][x].classList.add("sunk");
+      } else {
+        this.shotBoard[y][x].classList.add("hit");
+      }
+    });
+    opponentPlayer.playerBoard.spotsMissed.forEach((element) => {
+      const [y, x] = element;
+      this.shotBoard[y][x].classList.add("miss");
+    });
   }
 }
 // console.log(domReference);
