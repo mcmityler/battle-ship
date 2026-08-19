@@ -8,10 +8,60 @@
   <body>
     <button class="turn-change-button">Change Turns</button>
     <div class="ship-grid-container">
-      <p>Your Ships</p>
+      <p class="player-ships">Your Ships</p>
     </div>
     <div class="shot-grid-container">
-      <p>Your Shots</p>
+      <p class="player-shots">Your Shots</p>
     </div>
+    <dialog id="new-game-dialog" open>
+      <div class="dialog-container">
+        <form id="new-game-form">
+          <h2>Battleship</h2>
+          <div class="p1-container input-container">
+            <input
+              type="text"
+              name="p1-input"
+              id="p1-input"
+              placeholder=""
+              maxlength="26"
+              required
+              autocomplete="off"
+            />
+            <label for="p1-input" class="hover-pointer">Player 1 Name: </label>
+          </div>
+          <div class="submit-checkbox">
+            <input
+              class="tgl tgl-flip"
+              type="checkbox"
+              name="read-input"
+              id="read-input"
+            />
+            <label
+              class="tgl-btn"
+              data-tg-off="P.V.P."
+              data-tg-on="Computer"
+              for="read-input"
+            ></label>
+          </div>
+          <div class="p2-container input-container">
+            <input
+              type="text"
+              name="p2"
+              id="p2-input"
+              placeholder=""
+              maxlength="26"
+              required
+              autocomplete="off"
+            />
+            <label for="p2-input" class="hover-pointer">Player 2 Name: </label>
+          </div>
+
+          <button class="start-game-button hover-pointer">Start Game</button>
+        </form>
+        <button class="close-dialog-button hover-pointer" aria-label="Close">
+          <!-- <i class="fa-solid fa-x"></i> REMOVE THIS BUT I WANT THE LiBRARY POSSIBLY IN THE GAME TO USE -->
+        </button>
+      </div>
+    </dialog>
   </body>
 </html>

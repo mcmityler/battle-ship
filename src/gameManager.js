@@ -3,10 +3,15 @@ import { Player } from "./player.js";
 import { Gameboard, GameSpace } from "./gameboard.js";
 const shipRowContainer = document.querySelector(".ship-grid-container");
 const shotRowContainer = document.querySelector(".shot-grid-container");
+const playerShipsText = document.querySelector(".player-ships");
+const playerShotsText = document.querySelector(".player-shots");
 class GameManager {
   constructor() {
     this.player1 = new Player();
     this.player2 = new Player();
+    this.player2.isComputer === false
+      ? (this.player2.playerName = "Player 2")
+      : (this.player2.playerName = "Computer");
     this.shipBoard = [];
     this.shotBoard = [];
     this.gridSize = 10;
@@ -76,8 +81,10 @@ class GameManager {
         this.playersTurn === 1 ? this.player1 : this.player2,
         this.playersTurn === 1 ? this.player2 : this.player1,
       );
-      this.changeTurnButton.classList.remove("hidden");
-      this.nextTurn = true;
+      if (this.player2.isComputer === false) {
+        this.changeTurnButton.classList.remove("hidden");
+        this.nextTurn = true;
+      }
     }
     //if y,x-ship
   }
@@ -88,6 +95,7 @@ class GameManager {
       this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
     );
     this.nextTurn = false;
+    this.changeTurnButton.classList.add("hidden");
   }
   randomShipPlacement(myShip, currentPlayer) {
     const directions = [
@@ -134,6 +142,8 @@ class GameManager {
     this.randomizeBoard(this.player2);
   }
   displayBoard(currentPlayer, opponentPlayer) {
+    playerShipsText.textContent = `${currentPlayer.playerName} Ships`;
+    playerShotsText.textContent = `${currentPlayer.playerName} Shots`;
     for (let y = 0; y < 10; y++) {
       for (let x = 0; x < 10; x++) {
         //erase all class list on ship board
