@@ -2,6 +2,7 @@
 :root {
   /* used for the dialog backdrop */
   --light-color: #ffeadb;
+  --light-orange: rgb(252, 217, 192);
   --orange: #ff9a76;
 
   --light-green: #679b9b;
@@ -12,7 +13,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  outline: red solid 1px;
+  /* outline: red solid 1px; */
 }
 body {
   background-color: rebeccapurple;
@@ -263,4 +264,47 @@ because the nesting selector cannot represent pseudo-elements. */
 }
 .submit-checkbox:has(:checked) ~ .difficulty-container {
   display: block;
+}
+
+/* Difficulty Radio button styling */
+.difficulty-inputs {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  background-color: var(--light-color);
+  box-sizing: border-box;
+  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+  padding: 0.25rem;
+  width: 150px;
+  font-size: 14px;
+}
+
+.difficulty-inputs label {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.difficulty-inputs label input {
+  display: none;
+}
+
+.difficulty-inputs label .name {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: none;
+  padding: 0.5rem 0;
+  color: var(--dark-color);
+  transition: all 0.15s ease-in-out;
+}
+
+.difficulty-inputs label input:hover + .name {
+  background-color: var(--light-orange);
+}
+.difficulty-inputs label input:checked + .name {
+  background-color: var(--orange);
+  font-weight: 600;
 }

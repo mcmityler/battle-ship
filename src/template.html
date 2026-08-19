@@ -63,21 +63,26 @@
             <label for="p2-input" class="hover-pointer">Player 2 Name: </label>
           </div>
           <div class="difficulty-container">
-            <input
-              type="radio"
-              name="difficulty-selector"
-              id="easy-difficulty"
-              checked
-            />
-            <label for="easy-difficulty">Easy</label>
-            <input
-              type="radio"
-              name="difficulty-selector"
-              id="hard-difficulty"
-            />
-            <label for="hard-difficulty">Hard</label>
+            <div class="difficulty-inputs">
+              <label for="easy-difficulty">
+                <input
+                  type="radio"
+                  name="difficulty-selector"
+                  id="easy-difficulty"
+                  checked
+                />
+                <span class="name">Easy</span>
+              </label>
+              <label for="hard-difficulty">
+                <input
+                  type="radio"
+                  name="difficulty-selector"
+                  id="hard-difficulty"
+                />
+                <span class="name">Hard</span>
+              </label>
+            </div>
           </div>
-
           <button class="start-game-button hover-pointer">Start Game</button>
         </form>
         <!-- <button class="close-dialog-button hover-pointer" aria-label="Close">
