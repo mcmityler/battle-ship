@@ -9,23 +9,59 @@ class GameManager {
   constructor() {
     this.player1 = new Player();
     this.player2 = new Player();
-    this.player2.isComputer === false
-      ? (this.player2.playerName = "Player 2")
-      : (this.player2.playerName = "Computer");
     this.shipBoard = [];
     this.shotBoard = [];
     this.gridSize = 10;
-    this.initializeGridButtons();
     this.playersTurn = 1;
     this.nextTurn = false; //is it the next persons turn
+
+    this.changeTurnButton = document.querySelector(".turn-change-button");
+    this.changeTurnButton.classList.add("hidden");
+    this.changeTurnButton.addEventListener("click", () => this.changeTurns());
+
+    this.startGameForm = document.getElementById("new-game-form");
+    this.startGameForm.addEventListener("submit", (event) =>
+      this.startGame(event),
+    );
+  }
+  startGame(event) {
+    // 1. Prevent the default browser page reload
+    event.preventDefault();
+    // 2. Instantiate FormData by passing the form element
+    const formData = new FormData(event.target);
+    console.log(formData);
+    console.log(formData.get("p1-input"));
+    console.log(formData.has("computer-input"));
+    console.log(formData.get("p2-input"));
+    console.log(formData.get("difficulty-selector"));
+
+    //set player 1 name (default: Player 1)
+    this.player1.playerName =
+      formData.get("p1-input") == "" ? "Player 1" : formData.get("p1-input");
+    //check if player 2 is a computer
+    this.player2.isComputer = formData.has("computer-input");
+    //check if player 2 has a name (Default: Player 2 or Computer)
+    this.player2.isComputer === false
+      ? (this.player2.playerName =
+          formData.get("p2-input") == ""
+            ? "Player 2"
+            : formData.get("p2-input"))
+      : (this.player2.playerName = "Computer");
+
+    //set texts to player 1's name
+    playerShipsText.textContent = `${this.player1.playerName} Ships`;
+    playerShotsText.textContent = `${this.player1.playerName} Shots`;
+
+    this.initializeGridButtons();
     this.populateBoard();
     this.displayBoard(
       this.playersTurn === 1 ? this.player1 : this.player2, //current player
       this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
     );
-    this.changeTurnButton = document.querySelector(".turn-change-button");
-    this.changeTurnButton.classList.add("hidden");
-    this.changeTurnButton.addEventListener("click", () => this.changeTurns());
+    //close inputs
+    this.startGameForm.parentElement.parentElement.close();
+
+    this.startGameForm.reset(); //clear form inputs
   }
   initializeGridButtons() {
     for (let y = 0; y < this.gridSize; y++) {
@@ -73,7 +109,28 @@ class GameManager {
         //if P1 turn attack P2 board and vice versa
         shotResult = this.player2.playerBoard.receiveAttack([y, x]);
       } else if (this.playersTurn === 2) {
-        shotResult = this.player1.playerBoard.receiveAttack([y, x]);
+        if (this.player2.isComputer === true) {
+          let hit = false;
+          while (hit === false) {
+            shotResult = this.player1.playerBoard.receiveAttack([
+              Math.floor(Math.random() * 10),
+              Math.floor(Math.random() * 10),
+            ]);
+            this.displayBoard(this.player1, this.player2);
+            console.log("computer hit");
+            this.changeTurns();
+            if (
+              shotResult === "miss" ||
+              shotResult === "hit" ||
+              shotResult === "sunk"
+            ) {
+              hit = true;
+            }
+          }
+          return;
+        } else {
+          shotResult = this.player1.playerBoard.receiveAttack([y, x]);
+        }
       }
       console.log(shotResult);
 
@@ -84,16 +141,30 @@ class GameManager {
       if (this.player2.isComputer === false) {
         this.changeTurnButton.classList.remove("hidden");
         this.nextTurn = true;
+      } else {
+        //Make a computer move here
+        this.computerMove();
       }
     }
     //if y,x-ship
   }
+  computerMove() {
+    this.changeTurns();
+    this.gridcellClick(
+      ` ${[
+        Math.floor(Math.random() * 10),
+        Math.floor(Math.random() * 10),
+      ]} shot`,
+    );
+  }
   changeTurns() {
     this.playersTurn === 1 ? (this.playersTurn = 2) : (this.playersTurn = 1);
-    this.displayBoard(
-      this.playersTurn === 1 ? this.player1 : this.player2, //current player
-      this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
-    );
+    if (this.player2.isComputer === false) {
+      this.displayBoard(
+        this.playersTurn === 1 ? this.player1 : this.player2, //current player
+        this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
+      );
+    }
     this.nextTurn = false;
     this.changeTurnButton.classList.add("hidden");
   }

@@ -11,11 +11,13 @@
   </head>
   <body>
     <button class="turn-change-button">Change Turns</button>
-    <div class="ship-grid-container">
+    <div class="ship-grid-wrapper">
       <p class="player-ships">Your Ships</p>
+      <div class="ship-grid-container"></div>
     </div>
-    <div class="shot-grid-container">
+    <div class="shot-grid-wrapper">
       <p class="player-shots">Your Shots</p>
+      <div class="shot-grid-container"></div>
     </div>
     <dialog id="new-game-dialog" open>
       <div class="dialog-container">
@@ -39,20 +41,20 @@
             <input
               class="tgl tgl-flip"
               type="checkbox"
-              name="read-input"
-              id="read-input"
+              name="computer-input"
+              id="computer-input"
             />
             <label
               class="tgl-btn"
               data-tg-off="P.V.P."
               data-tg-on="Computer"
-              for="read-input"
+              for="computer-input"
             ></label>
           </div>
           <div class="p2-container input-container">
             <input
               type="text"
-              name="p2"
+              name="p2-input"
               id="p2-input"
               placeholder=""
               maxlength="26"
@@ -67,6 +69,7 @@
                   type="radio"
                   name="difficulty-selector"
                   id="easy-difficulty"
+                  value="easy"
                   checked
                 />
                 <span class="name">Easy</span>
@@ -76,6 +79,7 @@
                   type="radio"
                   name="difficulty-selector"
                   id="hard-difficulty"
+                  value="hard"
                 />
                 <span class="name">Hard</span>
               </label>
