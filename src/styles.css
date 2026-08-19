@@ -6,6 +6,13 @@
 
   --light-green: #679b9b;
   --dark-green: #637373;
+  --dark-color: #1e2525;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: red solid 1px;
 }
 body {
   background-color: rebeccapurple;
@@ -33,124 +40,6 @@ body {
   background-color: greenyellow;
 }
 
-/*Apple Input*/
-.input-container {
-  width: 400px;
-  position: relative;
-}
-.input-container input {
-  width: 100%;
-  padding: 20px 50px 10px 10px;
-  border-radius: 10px;
-  border: 1px solid black;
-  font-size: 1.1em;
-  outline: none;
-}
-.input-container label {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0;
-  padding: 10px;
-  color: grey;
-  pointer-events: none;
-  transition: all 0.4s ease;
-}
-/* the second one targets if the input has something different than the placeholder of "" this
-    is done so that when there is an input it moves up and works for inputs that aren't required */
-.input-container input:focus ~ label,
-.input-container input:not(:placeholder-shown) ~ label {
-  transform: translateY(-33px);
-  font-size: 0.8em;
-}
-/* FANCY CHECKBOX*/
-
-.submit-checkbox .tgl {
-  display: none;
-}
-.submit-checkbox .tgl + .tgl-btn {
-  outline: 0;
-  display: block;
-  width: 6em;
-  height: 2em;
-  position: relative;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.submit-checkbox .tgl + .tgl-btn:after,
-.submit-checkbox .tgl + .tgl-btn:before {
-  position: relative;
-  display: block;
-  content: "";
-  width: 50%;
-  height: 100%;
-}
-.submit-checkbox .tgl + .tgl-btn:after {
-  left: 0;
-}
-.submit-checkbox .tgl + .tgl-btn:before {
-  display: none;
-}
-.submit-checkbox .tgl:checked + .tgl-btn:after {
-  left: 50%;
-}
-.submit-checkbox .tgl-flip + .tgl-btn {
-  padding: 2px;
-  transition: all 0.2s ease;
-  font-family: sans-serif;
-  perspective: 100px;
-}
-.submit-checkbox .tgl-flip + .tgl-btn:after,
-.submit-checkbox .tgl-flip + .tgl-btn:before {
-  display: inline-block;
-  transition: all 0.4s ease;
-  width: 100%;
-  text-align: center;
-  position: absolute;
-  line-height: 2em;
-  font-weight: bold;
-  color: #fff;
-  position: absolute;
-  top: 0;
-  left: 0;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 4px;
-}
-.submit-checkbox .tgl-flip + .tgl-btn:after {
-  content: attr(data-tg-on);
-  background: green;
-  transform: rotateY(-180deg);
-}
-.submit-checkbox .tgl-flip + .tgl-btn:before {
-  background: orange;
-  content: attr(data-tg-off);
-}
-.submit-checkbox .tgl-flip + .tgl-btn:active:before {
-  transform: rotateY(-20deg);
-}
-.submit-checkbox .tgl-flip:checked + .tgl-btn:before {
-  transform: rotateY(180deg);
-}
-.submit-checkbox .tgl-flip:checked + .tgl-btn:after {
-  transform: rotateY(0);
-  left: 0;
-  background: green;
-}
-.submit-checkbox .tgl-flip:checked + .tgl-btn:active:after {
-  transform: rotateY(20deg);
-}
-
-.submit-checkbox:not(:checked) + .p2-container {
-  display: block;
-}
-.submit-checkbox:has(:checked) + .p2-container {
-  display: none;
-}
-
 /* Dialog Styling */
 #new-game-dialog {
   background-color: var(--light-green);
@@ -162,20 +51,29 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: auto;
   min-width: 600px;
-  height: 500px;
+  height: 450px;
 }
 .dialog-container {
-  display: grid;
-  grid-template-columns: 1fr 40px;
-  row-gap: 10px;
 }
 #new-game-form {
   display: grid;
-  grid-template-rows: 60px 60px 60px 60px 35px 40px 35px;
+  grid-template-rows: repeat(5, 60px);
   gap: 10px;
   grid-column: 1/-1;
   place-items: center;
+}
+.title-container {
+  display: flex;
+  flex-direction: row;
+  place-items: center;
+  gap: 5px;
+  color: var(--dark-color);
+  font-size: 1.4rem;
+}
+.title-container i {
+  font-size: 2rem;
 }
 /* DIALOG ANIMATION */
 dialog:open {
@@ -239,4 +137,130 @@ because the nesting selector cannot represent pseudo-elements. */
     background-color: transparent;
     opacity: 0;
   }
+}
+/*Apple Input*/
+.input-container {
+  width: 400px;
+  position: relative;
+}
+.input-container input {
+  width: 100%;
+  padding: 20px 50px 10px 10px;
+  border-radius: 10px;
+  border: 1px solid black;
+  font-size: 1.1em;
+  outline: none;
+}
+.input-container label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  padding: 10px;
+  color: grey;
+  pointer-events: none;
+  transition: all 0.4s ease;
+}
+/* the second one targets if the input has something different than the placeholder of "" this
+    is done so that when there is an input it moves up and works for inputs that aren't required */
+.input-container input:focus ~ label,
+.input-container input:not(:placeholder-shown) ~ label {
+  transform: translateY(-33px);
+  font-size: 0.8em;
+}
+
+/* FANCY CHECKBOX / PVP & COMPUTER SELECTOR*/
+
+.submit-checkbox .tgl {
+  display: none;
+}
+.submit-checkbox .tgl + .tgl-btn {
+  outline: 0;
+  display: block;
+  width: 6em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.submit-checkbox .tgl + .tgl-btn:after,
+.submit-checkbox .tgl + .tgl-btn:before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+}
+.submit-checkbox .tgl + .tgl-btn:after {
+  left: 0;
+}
+.submit-checkbox .tgl + .tgl-btn:before {
+  display: none;
+}
+.submit-checkbox .tgl:checked + .tgl-btn:after {
+  left: 50%;
+}
+.submit-checkbox .tgl-flip + .tgl-btn {
+  padding: 2px;
+  transition: all 0.2s ease;
+  font-family: sans-serif;
+  perspective: 100px;
+}
+.submit-checkbox .tgl-flip + .tgl-btn:after,
+.submit-checkbox .tgl-flip + .tgl-btn:before {
+  display: inline-block;
+  transition: all 0.4s ease;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  line-height: 2em;
+  font-weight: bold;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 4px;
+}
+.submit-checkbox .tgl-flip + .tgl-btn:after {
+  content: attr(data-tg-on);
+  background: var(--orange);
+  transform: rotateY(-180deg);
+}
+.submit-checkbox .tgl-flip + .tgl-btn:before {
+  background: var(--light-color);
+  color: var(--dark-color);
+  content: attr(data-tg-off);
+}
+.submit-checkbox .tgl-flip + .tgl-btn:active:before {
+  transform: rotateY(-20deg);
+}
+.submit-checkbox .tgl-flip:checked + .tgl-btn:before {
+  transform: rotateY(180deg);
+}
+.submit-checkbox .tgl-flip:checked + .tgl-btn:after {
+  transform: rotateY(0);
+  left: 0;
+
+  background: var(--orange);
+}
+.submit-checkbox .tgl-flip:checked + .tgl-btn:active:after {
+  transform: rotateY(20deg);
+}
+
+.submit-checkbox:not(:checked) + .p2-container {
+  display: block;
+}
+.submit-checkbox:has(:checked) + .p2-container {
+  display: none;
+}
+.submit-checkbox:not(:checked) ~ .difficulty-container {
+  display: none;
+}
+.submit-checkbox:has(:checked) ~ .difficulty-container {
+  display: block;
 }

@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
     <title>Battleship</title>
   </head>
   <body>
@@ -16,7 +20,10 @@
     <dialog id="new-game-dialog" open>
       <div class="dialog-container">
         <form id="new-game-form">
-          <h2>Battleship</h2>
+          <div class="title-container">
+            <i class="fa-solid fa-ship"></i>
+            <h2>Battleship</h2>
+          </div>
           <div class="p1-container input-container">
             <input
               type="text"
@@ -55,12 +62,27 @@
             />
             <label for="p2-input" class="hover-pointer">Player 2 Name: </label>
           </div>
+          <div class="difficulty-container">
+            <input
+              type="radio"
+              name="difficulty-selector"
+              id="easy-difficulty"
+              checked
+            />
+            <label for="easy-difficulty">Easy</label>
+            <input
+              type="radio"
+              name="difficulty-selector"
+              id="hard-difficulty"
+            />
+            <label for="hard-difficulty">Hard</label>
+          </div>
 
           <button class="start-game-button hover-pointer">Start Game</button>
         </form>
-        <button class="close-dialog-button hover-pointer" aria-label="Close">
-          <!-- <i class="fa-solid fa-x"></i> REMOVE THIS BUT I WANT THE LiBRARY POSSIBLY IN THE GAME TO USE -->
-        </button>
+        <!-- <button class="close-dialog-button hover-pointer" aria-label="Close">
+          <i class="fa-solid fa-x"></i> REMOVE THIS BUT I WANT THE LiBRARY POSSIBLY IN THE GAME TO USE 
+        </button> -->
       </div>
     </dialog>
   </body>
