@@ -2,8 +2,9 @@
 :root {
   /* used for the dialog backdrop */
   --light-color: #ffeadb;
-  --light-orange: rgb(252, 217, 192);
+  --light-orange: rgb(235, 202, 179);
   --orange: #ff9a76;
+  --dark-orange: #dd724b;
 
   --light-green: #679b9b;
   --dark-green: #637373;
@@ -13,7 +14,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* outline: red solid 1px; */
+  outline: red solid 1px;
 }
 body {
   background-color: rebeccapurple;
@@ -64,6 +65,7 @@ body {
   gap: 10px;
   grid-column: 1/-1;
   place-items: center;
+  gap: 20px;
 }
 .title-container {
   display: flex;
@@ -75,6 +77,10 @@ body {
 }
 .title-container i {
   font-size: 2rem;
+}
+.start-game-button {
+  width: 200px;
+  height: 50px;
 }
 /* DIALOG ANIMATION */
 dialog:open {
@@ -248,6 +254,12 @@ because the nesting selector cannot represent pseudo-elements. */
   left: 0;
 
   background: var(--orange);
+}
+.submit-checkbox .tgl-flip:checked:hover + .tgl-btn:after {
+  background: var(--dark-orange);
+}
+.submit-checkbox .tgl-flip:hover + .tgl-btn::before {
+  background: var(--light-orange);
 }
 .submit-checkbox .tgl-flip:checked + .tgl-btn:active:after {
   transform: rotateY(20deg);
