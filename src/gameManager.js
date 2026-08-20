@@ -17,7 +17,7 @@ class GameManager {
     this.computerThinking = false;
 
     this.changeTurnButton = document.querySelector(".turn-change-button");
-    this.changeTurnButton.classList.add("hidden");
+    // this.changeTurnButton.classList.add("hidden");
     this.changeTurnButton.addEventListener("click", () => this.changeTurns());
 
     this.startGameForm = document.getElementById("new-game-form");
@@ -183,7 +183,7 @@ class GameManager {
       );
     }
     this.nextTurn = false;
-    this.changeTurnButton.classList.add("hidden");
+    // this.changeTurnButton.classList.add("hidden");
   }
   randomShipPlacement(myShip, currentPlayer) {
     const directions = [

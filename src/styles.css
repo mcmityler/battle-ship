@@ -130,7 +130,7 @@ body {
 }
 .right-sidebar-container {
   display: grid;
-  grid-template-rows: 200px 200px 200px;
+  grid-template-rows: 200px 150px 200px;
   margin-left: 30px;
   gap: 20px;
 }
@@ -157,7 +157,8 @@ body {
   text-align: center;
 }
 .random-placement-button,
-.confirm-placement-button {
+.confirm-placement-button,
+.turn-change-button {
   color: var(--dark-color);
   font-size: 0.9rem;
   background-color: var(--orange);
@@ -170,19 +171,44 @@ body {
   transition: all 0.2s ease-in-out;
 }
 .random-button-container:hover .random-placement-button,
-.confirm-button-container:hover .confirm-placement-button {
+.confirm-button-container:hover .confirm-placement-button,
+.turn-change-button-container:hover .turn-change-button {
   transform: translateY(-4px);
   box-shadow: 2px 2px 7px var(--dark-color);
 }
 .random-placement-button:hover,
-.confirm-placement-button:hover {
+.confirm-placement-button:hover,
+.turn-change-button:hover {
   background-color: var(--dark-orange);
   transform: translateY(-2px);
 }
 .random-button-container:hover .random-placement-button:active,
-.confirm-button-container:hover .confirm-placement-button:active {
+.confirm-button-container:hover .confirm-placement-button:active,
+.turn-change-button-container:active .turn-change-button {
   background-color: var(--dark-orange);
   transform: translateY(-2px);
+}
+.change-turns-container {
+  background-color: var(--light-orange);
+  width: 200px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: inset 3px 3px 6px var(--dark-color);
+  display: grid;
+  grid-template-rows: 20px 30px 1fr;
+  grid-row: 2/3;
+}
+.current-turn {
+  font-size: 1.5rem;
+  text-align: center;
+}
+.current-turn-text {
+  text-align: center;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.turn-change-button {
+  margin-top: 20px;
 }
 /* Dialog Styling */
 #new-game-dialog {
