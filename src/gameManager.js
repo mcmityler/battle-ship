@@ -14,6 +14,7 @@ class GameManager {
     this.gridSize = 10;
     this.playersTurn = 1;
     this.nextTurn = false; //is it the next persons turn
+    this.computerThinking = false;
 
     this.changeTurnButton = document.querySelector(".turn-change-button");
     this.changeTurnButton.classList.add("hidden");
@@ -23,6 +24,7 @@ class GameManager {
     this.startGameForm.addEventListener("submit", (event) =>
       this.startGame(event),
     );
+    this.currentTurnTextbox = document.querySelector(".current-turn");
   }
   startGame(event) {
     // 1. Prevent the default browser page reload
@@ -100,7 +102,15 @@ class GameManager {
   }
   gridcellClick(myID) {
     const [y, x, type] = myID.split(" ");
-    console.log(`(Y:${y},X:${x}) - ${type}` + " cell clicked");
+    console.log(
+      `(Y:${y},X:${x}) - ${type}` +
+        " cell clicked" +
+        type +
+        "  " +
+        this.nextTurn,
+    );
+    if (this.computerThinking === true) return;
+
     //if y,x-shot
     if (type === "shot" && this.nextTurn === false) {
       //result of what shot will be
@@ -110,23 +120,11 @@ class GameManager {
         shotResult = this.player2.playerBoard.receiveAttack([y, x]);
       } else if (this.playersTurn === 2) {
         if (this.player2.isComputer === true) {
-          let hit = false;
-          while (hit === false) {
-            shotResult = this.player1.playerBoard.receiveAttack([
-              Math.floor(Math.random() * 10),
-              Math.floor(Math.random() * 10),
-            ]);
-            this.displayBoard(this.player1, this.player2);
-            console.log("computer hit");
-            this.changeTurns();
-            if (
-              shotResult === "miss" ||
-              shotResult === "hit" ||
-              shotResult === "sunk"
-            ) {
-              hit = true;
-            }
-          }
+          this.currentTurnTextbox.textContent = `Computers's turn `;
+          //timeout to make it feel like the computer is doing something
+          this.computerThinking = true;
+          setTimeout(() => this.computerHit(), 700);
+
           return;
         } else {
           shotResult = this.player1.playerBoard.receiveAttack([y, x]);
@@ -146,16 +144,41 @@ class GameManager {
         this.computerMove();
       }
     }
+
     //if y,x-ship
   }
   computerMove() {
     this.changeTurns();
     this.gridcellClick(
-      ` ${[
-        Math.floor(Math.random() * 10),
-        Math.floor(Math.random() * 10),
-      ]} shot`,
+      `${Math.floor(Math.random() * 10)} ${Math.floor(
+        Math.random() * 10,
+      )} shot`,
     );
+  }
+  computerHit() {
+    let hit = false;
+    let shotResult = "";
+    while (hit === false) {
+      shotResult = this.player1.playerBoard.receiveAttack([
+        Math.floor(Math.random() * 10),
+        Math.floor(Math.random() * 10),
+      ]);
+      console.log("computer hit");
+      if (
+        shotResult === "miss" ||
+        shotResult === "hit" ||
+        shotResult === "sunk"
+      ) {
+        hit = true;
+      }
+    }
+    this.displayBoard(this.player1, this.player2);
+
+    this.changeTurns();
+
+    this.currentTurnTextbox.textContent = `${this.player1.playerName}'s turn `;
+    //done making a move, user can now strike
+    this.computerThinking = false;
   }
   changeTurns() {
     this.playersTurn === 1 ? (this.playersTurn = 2) : (this.playersTurn = 1);
@@ -215,6 +238,7 @@ class GameManager {
   displayBoard(currentPlayer, opponentPlayer) {
     playerShipsText.textContent = `${currentPlayer.playerName} Ships`;
     playerShotsText.textContent = `${currentPlayer.playerName} Shots`;
+    this.currentTurnTextbox.textContent = `${currentPlayer.playerName}'s turn `;
     for (let y = 0; y < 10; y++) {
       for (let x = 0; x < 10; x++) {
         //erase all class list on ship board
