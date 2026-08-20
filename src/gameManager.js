@@ -51,8 +51,8 @@ class GameManager {
       : (this.player2.playerName = "Computer");
 
     //set texts to player 1's name
-    playerShipsText.textContent = `${this.player1.playerName} Ships`;
-    playerShotsText.textContent = `${this.player1.playerName} Shots`;
+    playerShipsText.textContent = `${this.player1.playerName}'s Ships`;
+    playerShotsText.textContent = `${this.player1.playerName}'s Shots`;
 
     this.initializeGridButtons();
     this.populateBoard();
@@ -117,7 +117,7 @@ class GameManager {
           this.currentTurnTextbox.textContent = `Computers's turn `;
           //timeout to make it feel like the computer is doing something
           this.computerThinking = true;
-          setTimeout(() => this.computerHit(), 700);
+          setTimeout(() => this.computerHit(), 400);
 
           return;
         } else {
@@ -230,8 +230,8 @@ class GameManager {
     this.randomizeBoard(this.player2);
   }
   displayBoard(currentPlayer, opponentPlayer) {
-    playerShipsText.textContent = `${currentPlayer.playerName} Ships`;
-    playerShotsText.textContent = `${currentPlayer.playerName} Shots`;
+    playerShipsText.textContent = `${currentPlayer.playerName}'s Ships`;
+    playerShotsText.textContent = `${currentPlayer.playerName}'s Shots`;
     this.currentTurnTextbox.textContent = `${currentPlayer.playerName}'s turn `;
     for (let y = 0; y < 10; y++) {
       for (let x = 0; x < 10; x++) {

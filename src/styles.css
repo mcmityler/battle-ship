@@ -7,9 +7,10 @@
   --dark-orange: #dd724b;
 
   --light-green: #679b9b;
+  --dark-green: #597575;
+  --dark-color: #161d1d;
+
   --green: #46b64c;
-  --dark-green: #637373;
-  --dark-color: #1e2525;
 }
 * {
   margin: 0;
@@ -22,7 +23,7 @@ body {
 }
 .game-container {
   display: grid;
-  grid-template-columns: 1fr 500px 1fr;
+  grid-template-columns: 1fr 400px 1fr;
   grid-template-rows: 50px 1fr;
   gap: 10px;
 }
@@ -30,15 +31,15 @@ body {
   grid-column: 1/-1;
   justify-self: center;
 }
-.game-board-container {
-  grid-column: 2/3;
-  grid-row: 2/-1;
-}
+
 /* Left Sidebar */
 .left-sidebar-container {
   display: grid;
   grid-template-rows: 300px 200px;
   gap: 30px;
+  color: var(--dark-color);
+  justify-content: right;
+  margin-right: 30px;
 }
 .legend-boat-summary,
 .boat-summary-container {
@@ -49,7 +50,7 @@ body {
   padding: 20px;
   background-color: var(--light-orange);
   border-radius: 20px;
-  box-shadow: 3px 3px 6px var(--dark-color);
+  box-shadow: inset 3px 3px 6px var(--dark-color);
 }
 .legend-boat-summary {
   height: 200px;
@@ -68,7 +69,7 @@ body {
   width: 200px;
   place-content: center;
   padding-top: 5px;
-  border-top: 3px solid black;
+  border-top: 3px solid var(--dark-color);
 }
 .boat-status {
   width: 30px;
@@ -78,11 +79,32 @@ body {
   place-self: center;
   border: 2px solid var(--dark-color);
 }
+.hits-left {
+  font-weight: bold;
+}
 .boat-hurt {
   background-color: var(--orange);
 }
 .boat-sunk {
   background-color: red;
+}
+.gameboard-container {
+  grid-column: 2/3;
+  grid-row: 2/-1;
+  background-color: var(--dark-green);
+  place-self: center;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: inset 3px 3px 6px var(--dark-color);
+  display: grid;
+  gap: 20px;
+}
+.player-ships,
+.player-shots {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--light-color);
+  padding-bottom: 5px;
 }
 .game-button {
   width: 30px;
@@ -106,7 +128,62 @@ body {
 .sunk {
   background-color: greenyellow;
 }
-
+.right-sidebar-container {
+  display: grid;
+  grid-template-rows: 200px 200px 200px;
+  margin-left: 30px;
+  gap: 20px;
+}
+.boat-swap-container {
+  background-color: var(--light-orange);
+  width: 200px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: inset 3px 3px 6px var(--dark-color);
+  display: grid;
+  grid-template-rows: 25px 35px 1fr 1fr;
+  grid-row: 1/2;
+  /* display: none; */
+}
+.pName-randomizer {
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--dark-color);
+}
+.place-text {
+  font-size: 1.6rem;
+  color: var(--dark-color);
+  text-align: center;
+}
+.random-placement-button,
+.confirm-placement-button {
+  color: var(--dark-color);
+  font-size: 0.9rem;
+  background-color: var(--orange);
+  border: none;
+  border-radius: 20px;
+  margin-top: 10px;
+  box-shadow: 2px 2px 3px var(--dark-color);
+  width: 160px;
+  height: 30px;
+  transition: all 0.2s ease-in-out;
+}
+.random-button-container:hover .random-placement-button,
+.confirm-button-container:hover .confirm-placement-button {
+  transform: translateY(-4px);
+  box-shadow: 2px 2px 7px var(--dark-color);
+}
+.random-placement-button:hover,
+.confirm-placement-button:hover {
+  background-color: var(--dark-orange);
+  transform: translateY(-2px);
+}
+.random-button-container:hover .random-placement-button:active,
+.confirm-button-container:hover .confirm-placement-button:active {
+  background-color: var(--dark-orange);
+  transform: translateY(-2px);
+}
 /* Dialog Styling */
 #new-game-dialog {
   background-color: var(--light-green);
@@ -154,6 +231,7 @@ body {
   font-size: 1.2rem;
   transition: all 0.2s ease-in-out;
   box-shadow: 2px 2px 3px var(--dark-color);
+  color: var(--dark-color);
 }
 .start-button-container:hover .start-game-button {
   transform: translateY(-3px);

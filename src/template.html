@@ -22,29 +22,36 @@
           <div class="boat-item">
             <div class="boat-status carrier-status"></div>
             <p>Carrier</p>
+            <p class="carrier-hits-left hits-left">(5)</p>
           </div>
           <div class="boat-item">
             <div class="boat-status battleship-status"></div>
             <p>Battleship</p>
+            <p class="battleship-hits-left hits-left">(4)</p>
           </div>
           <div class="boat-item">
             <div class="boat-status cruiser-status"></div>
             <p>Cruiser</p>
+            <p class="cruiser-hits-left hits-left">(3)</p>
           </div>
           <div class="boat-item">
             <div class="boat-status submarine-status"></div>
+
             <p>Submarine</p>
+            <p class="submarine-hits-left hits-left">(3)</p>
           </div>
           <div class="boat-item">
             <div class="boat-status destroyer-status"></div>
             <p>Destroyer</p>
+            <p class="destroyer-hits-left hits-left">(2)</p>
           </div>
         </div>
         <div class="legend-boat-summary">
           <p class="legend-title">Legend</p>
           <div class="summary-item">
             <div class="boat-status boat-available"></div>
-            <p>Available</p>
+            <p>Hidden</p>
+            <p class="hits-left">(Hits left)</p>
           </div>
           <div class="summary-item">
             <div class="boat-status boat-hurt"></div>
@@ -69,8 +76,21 @@
       </div>
       <!-- RIGHT SIDE BAR (CHANGE TURNS / RANDOMIZE BOATS)-->
       <div class="right-sidebar-container">
-        <button class="turn-change-button">Change Turns</button>
-        <p class="current-turn">Player _ Turn</p>
+        <div class="boat-swap-container">
+          <p class="pName-randomizer">Player Name</p>
+          <p class="place-text">Place Boats</p>
+          <div class="random-button-container">
+            <button class="random-placement-button">Randomize Placement</button>
+          </div>
+          <div class="confirm-button-container">
+            <button class="confirm-placement-button">Confirm Placement</button>
+          </div>
+        </div>
+        <div class="change-turns-container">
+          <button class="turn-change-button">Change Turns</button>
+          <p class="current-turn">Player _ Turn</p>
+        </div>
+        <div class="click-history-container"></div>
       </div>
     </div>
     <dialog id="new-game-dialog" open>
