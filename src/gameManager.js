@@ -114,7 +114,7 @@ class GameManager {
         shotResult = this.player2.playerBoard.receiveAttack([y, x]);
       } else if (this.playersTurn === 2) {
         if (this.player2.isComputer === true) {
-          this.currentTurnTextbox.textContent = `Computers's turn `;
+          this.currentTurnTextbox.textContent = `Computer`;
           //timeout to make it feel like the computer is doing something
           this.computerThinking = true;
           setTimeout(() => this.computerHit(), 400);
@@ -170,7 +170,7 @@ class GameManager {
 
     this.changeTurns();
 
-    this.currentTurnTextbox.textContent = `${this.player1.playerName}'s turn `;
+    this.currentTurnTextbox.textContent = `${this.player1.playerName}`;
     //done making a move, user can now strike
     this.computerThinking = false;
   }
@@ -232,7 +232,7 @@ class GameManager {
   displayBoard(currentPlayer, opponentPlayer) {
     playerShipsText.textContent = `${currentPlayer.playerName}'s Ships`;
     playerShotsText.textContent = `${currentPlayer.playerName}'s Shots`;
-    this.currentTurnTextbox.textContent = `${currentPlayer.playerName}'s turn `;
+    this.currentTurnTextbox.textContent = `${currentPlayer.playerName}`;
     for (let y = 0; y < 10; y++) {
       for (let x = 0; x < 10; x++) {
         //erase all class list on ship board

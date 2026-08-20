@@ -130,13 +130,13 @@ body {
 }
 .right-sidebar-container {
   display: grid;
-  grid-template-rows: 200px 150px 200px;
+  grid-template-rows: 200px 150px 382px;
   margin-left: 30px;
   gap: 20px;
 }
 .boat-swap-container {
   background-color: var(--light-orange);
-  width: 200px;
+  width: 250px;
   padding: 20px;
   border-radius: 20px;
   box-shadow: inset 3px 3px 6px var(--dark-color);
@@ -190,7 +190,7 @@ body {
 }
 .change-turns-container {
   background-color: var(--light-orange);
-  width: 200px;
+  width: 250px;
   padding: 20px;
   border-radius: 20px;
   box-shadow: inset 3px 3px 6px var(--dark-color);
@@ -209,6 +209,20 @@ body {
 }
 .turn-change-button {
   margin-top: 20px;
+}
+.click-history-container {
+  background-color: var(--light-orange);
+  width: 250px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: inset 3px 3px 6px var(--dark-color);
+  display: grid;
+  grid-template-rows: 25px 1fr 25px 1fr;
+}
+.p1-shot-tracker,
+.p2-shot-tracker {
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 /* Dialog Styling */
 #new-game-dialog {
