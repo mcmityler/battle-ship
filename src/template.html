@@ -10,19 +10,68 @@
     <title>Battleship</title>
   </head>
   <body>
-    <div class="main-title-container">
-      <i class="fa-solid fa-ship"></i>
-      <h2>Battleship</h2>
-    </div>
-    <button class="turn-change-button">Change Turns</button>
-    <p class="current-turn">Player _ Turn</p>
-    <div class="ship-grid-wrapper">
-      <p class="player-ships">Your Ships</p>
-      <div class="ship-grid-container"></div>
-    </div>
-    <div class="shot-grid-wrapper">
-      <p class="player-shots">Your Shots</p>
-      <div class="shot-grid-container"></div>
+    <div class="game-container">
+      <div class="main-title-container">
+        <i class="fa-solid fa-ship"></i>
+        <h1>Battleship</h1>
+      </div>
+      <!-- LEFT SIDEBAR (BOAT SUMMARY) -->
+      <div class="left-sidebar-container">
+        <div class="boat-summary-container">
+          <p class="boat-summary">Boat Summary</p>
+          <div class="boat-item">
+            <div class="boat-status carrier-status"></div>
+            <p>Carrier</p>
+          </div>
+          <div class="boat-item">
+            <div class="boat-status battleship-status"></div>
+            <p>Battleship</p>
+          </div>
+          <div class="boat-item">
+            <div class="boat-status cruiser-status"></div>
+            <p>Cruiser</p>
+          </div>
+          <div class="boat-item">
+            <div class="boat-status submarine-status"></div>
+            <p>Submarine</p>
+          </div>
+          <div class="boat-item">
+            <div class="boat-status destroyer-status"></div>
+            <p>Destroyer</p>
+          </div>
+        </div>
+        <div class="legend-boat-summary">
+          <p class="legend-title">Legend</p>
+          <div class="summary-item">
+            <div class="boat-status boat-available"></div>
+            <p>Available</p>
+          </div>
+          <div class="summary-item">
+            <div class="boat-status boat-hurt"></div>
+            <p>Has been hit</p>
+          </div>
+          <div class="summary-item">
+            <div class="boat-status boat-sunk"></div>
+            <p>Has been sunk</p>
+          </div>
+        </div>
+      </div>
+      <!-- GAME SCREEN -->
+      <div class="gameboard-container">
+        <div class="ship-grid-wrapper">
+          <p class="player-ships">Your Ships</p>
+          <div class="ship-grid-container"></div>
+        </div>
+        <div class="shot-grid-wrapper">
+          <p class="player-shots">Your Shots</p>
+          <div class="shot-grid-container"></div>
+        </div>
+      </div>
+      <!-- RIGHT SIDE BAR (CHANGE TURNS / RANDOMIZE BOATS)-->
+      <div class="right-sidebar-container">
+        <button class="turn-change-button">Change Turns</button>
+        <p class="current-turn">Player _ Turn</p>
+      </div>
     </div>
     <dialog id="new-game-dialog" open>
       <div class="dialog-container">

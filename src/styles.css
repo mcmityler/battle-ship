@@ -7,6 +7,7 @@
   --dark-orange: #dd724b;
 
   --light-green: #679b9b;
+  --green: #46b64c;
   --dark-green: #637373;
   --dark-color: #1e2525;
 }
@@ -17,7 +18,71 @@
   outline: red solid 1px;
 }
 body {
-  background-color: rebeccapurple;
+  background-color: var(--light-color);
+}
+.game-container {
+  display: grid;
+  grid-template-columns: 1fr 500px 1fr;
+  grid-template-rows: 50px 1fr;
+  gap: 10px;
+}
+.main-title-container {
+  grid-column: 1/-1;
+  justify-self: center;
+}
+.game-board-container {
+  grid-column: 2/3;
+  grid-row: 2/-1;
+}
+/* Left Sidebar */
+.left-sidebar-container {
+  display: grid;
+  grid-template-rows: 300px 200px;
+  gap: 30px;
+}
+.legend-boat-summary,
+.boat-summary-container {
+  justify-self: center;
+  height: 300px;
+  row-gap: 10px;
+  display: grid;
+  padding: 20px;
+  background-color: var(--light-orange);
+  border-radius: 20px;
+  box-shadow: 3px 3px 6px var(--dark-color);
+}
+.legend-boat-summary {
+  height: 200px;
+}
+.boat-summary,
+.legend-title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.boat-item,
+.summary-item {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 60px 1fr;
+  width: 200px;
+  place-content: center;
+  padding-top: 5px;
+  border-top: 3px solid black;
+}
+.boat-status {
+  width: 30px;
+  height: 15px;
+  background-color: var(--green);
+  border-radius: 20px;
+  place-self: center;
+  border: 2px solid var(--dark-color);
+}
+.boat-hurt {
+  background-color: var(--orange);
+}
+.boat-sunk {
+  background-color: red;
 }
 .game-button {
   width: 30px;
