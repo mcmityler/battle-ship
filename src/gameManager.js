@@ -101,15 +101,9 @@ class GameManager {
     }
   }
   gridcellClick(myID) {
-    const [y, x, type] = myID.split(" ");
-    console.log(
-      `(Y:${y},X:${x}) - ${type}` +
-        " cell clicked" +
-        type +
-        "  " +
-        this.nextTurn,
-    );
     if (this.computerThinking === true) return;
+    const [y, x, type] = myID.split(" ");
+    console.log(`(Y:${y},X:${x}) - ${type}` + " cell clicked");
 
     //if y,x-shot
     if (type === "shot" && this.nextTurn === false) {

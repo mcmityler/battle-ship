@@ -67,7 +67,8 @@ body {
   place-items: center;
   gap: 20px;
 }
-.title-container {
+.dialog-title-container,
+.main-title-container {
   display: flex;
   flex-direction: row;
   place-items: center;
@@ -75,7 +76,8 @@ body {
   color: var(--dark-color);
   font-size: 1.4rem;
 }
-.title-container i {
+.dialog-title-container i,
+.main-title-container i {
   font-size: 2rem;
 }
 .start-game-button {
