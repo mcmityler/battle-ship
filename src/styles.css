@@ -11,12 +11,14 @@
   --dark-color: #161d1d;
 
   --green: #46b64c;
+  --red: #ff0000;
+  --dark-red: #521700;
 }
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  outline: red solid 1px;
+  /* outline: red solid 1px; */
 }
 body {
   background-color: var(--light-color);
@@ -118,9 +120,6 @@ body {
 .hover-pointer:hover {
   cursor: pointer;
 }
-.hidden {
-  display: none;
-}
 .ship {
   background-color: grey;
 }
@@ -148,7 +147,17 @@ body {
   display: grid;
   grid-template-rows: 25px 35px 1fr 1fr;
   grid-row: 1/2;
+  border: 5px solid var(--red);
+  animation: boat-swap-notice 0.7s linear alternate infinite;
   /* display: none; */
+}
+@keyframes boat-swap-notice {
+  from {
+    border: 8px solid var(--red);
+  }
+  to {
+    border: 8px solid var(--dark-red);
+  }
 }
 .pName-randomizer {
   font-size: 1.1rem;
@@ -209,6 +218,20 @@ body {
   display: grid;
   grid-template-rows: 20px 30px 1fr;
   grid-row: 2/3;
+  height: 80px;
+
+  animation: change-container-anim 0.7s backwards alternate-reverse 1;
+}
+.open-container {
+  animation: change-container-anim 0.7s forwards alternate 1;
+}
+@keyframes change-container-anim {
+  from {
+    height: 80px;
+  }
+  to {
+    height: 150px;
+  }
 }
 .current-turn {
   font-size: 1.5rem;
@@ -221,6 +244,16 @@ body {
 }
 .turn-change-button {
   margin-top: 20px;
+  animation: turn-change 0.7s linear alternate infinite;
+}
+
+@keyframes turn-change {
+  from {
+    border: 5px solid var(--red);
+  }
+  to {
+    border: 5px solid var(--dark-red);
+  }
 }
 .click-history-container {
   background-color: var(--light-orange);
@@ -230,6 +263,7 @@ body {
   box-shadow: inset 3px 3px 6px var(--dark-color);
   display: grid;
   grid-template-rows: 25px 1fr 25px 1fr;
+  grid-row: 3/-1;
 }
 .p1-shot-tracker,
 .p2-shot-tracker {
@@ -294,6 +328,10 @@ body {
 }
 .start-game-button:active {
   background-color: var(--dark-orange);
+}
+
+.hidden {
+  display: none;
 }
 /* DIALOG ANIMATION */
 dialog:open {

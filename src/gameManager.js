@@ -15,15 +15,23 @@ class GameManager {
     this.playersTurn = 1;
     this.nextTurn = false; //is it the next persons turn
     this.computerThinking = false;
+    this.player1Placed = false; //has the player confirmed the placement of their ships
+    this.player2Placed = false; // ^
+    this.randomizedClicked = false; // has the player randomized the board once
 
     this.changeTurnButton = document.querySelector(".turn-change-button");
-    // this.changeTurnButton.classList.add("hidden");
+    this.changeTurnButton.classList.add("hidden");
+
     this.changeTurnButton.addEventListener("click", () => this.changeTurns());
 
     this.startGameForm = document.getElementById("new-game-form");
     this.startGameForm.addEventListener("submit", (event) =>
       this.startGame(event),
     );
+
+    this.initHTMLReferences();
+  }
+  initHTMLReferences() {
     this.currentTurnTextbox = document.querySelector(".current-turn");
 
     this.carrierStatus = document.querySelector(".carrier-status");
@@ -45,6 +53,26 @@ class GameManager {
     this.destroyerStatus = document.querySelector(".destroyer-status");
     this.destroyerHitsLeft = document.querySelector(".destroyer-hits-left");
     this.destroyerText = document.querySelector(".destroyer-text");
+
+    this.boatRandomizeContainer = document.querySelector(
+      ".boat-swap-container",
+    );
+    this.randomizeButton = document.querySelector(".random-placement-button");
+    this.randomizeButton.addEventListener("click", () => {
+      this.randomizeBoard(this.playersTurn === 1 ? this.player1 : this.player2);
+      this.displayBoard(
+        this.playersTurn === 1 ? this.player1 : this.player2,
+        this.playersTurn === 1 ? this.player2 : this.player1,
+      );
+    });
+    this.confirmButton = document.querySelector(".confirm-placement-button");
+    this.confirmButton.addEventListener("click", () => this.confirmPlacement());
+
+    this.randomizerName = document.querySelector(".pName-randomizer");
+    this.changeTurnContainer = document.querySelector(
+      ".change-turns-container",
+    );
+    this.changeTurnContainer.classList.remove("open-container");
   }
   startGame(event) {
     // 1. Prevent the default browser page reload
@@ -75,11 +103,13 @@ class GameManager {
     playerShotsText.textContent = `${this.player1.playerName}'s Shots`;
 
     this.initializeGridButtons();
-    this.populateBoard();
+    // this.populateBoard();
     this.displayBoard(
       this.playersTurn === 1 ? this.player1 : this.player2, //current player
       this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
     );
+    this.randomizerName.textContent = this.player1.playerName;
+
     //close inputs
     this.startGameForm.parentElement.parentElement.close();
 
@@ -122,6 +152,7 @@ class GameManager {
   }
   gridcellClick(myID) {
     if (this.computerThinking === true) return;
+    if (this.player1Placed === false || this.player2Placed === false) return;
     const [y, x, type] = myID.split(" ");
     console.log(`(Y:${y},X:${x}) - ${type}` + " cell clicked");
 
@@ -152,12 +183,10 @@ class GameManager {
         this.playersTurn === 1 ? this.player1 : this.player2,
         this.playersTurn === 1 ? this.player2 : this.player1,
       );
-      if (shotResult !== "miss") {
-        this.updateBoatSummary();
-      }
 
       if (this.player2.isComputer === false) {
-        this.changeTurnButton.classList.remove("hidden");
+        this.changeTurnContainer.classList.add("open-container");
+        setTimeout(700, this.changeTurnButton.classList.remove("hidden"));
         this.nextTurn = true;
       } else {
         //Make a computer move here
@@ -177,9 +206,8 @@ class GameManager {
   }
   computerHit() {
     let hit = false;
-    let shotResult = "";
     while (hit === false) {
-      shotResult = this.player1.playerBoard.receiveAttack([
+      let shotResult = this.player1.playerBoard.receiveAttack([
         Math.floor(Math.random() * 10),
         Math.floor(Math.random() * 10),
       ]);
@@ -209,7 +237,9 @@ class GameManager {
       );
     }
     this.nextTurn = false;
-    // this.changeTurnButton.classList.add("hidden");
+    this.changeTurnContainer.classList.remove("open-container");
+
+    this.changeTurnButton.classList.add("hidden");
   }
   randomShipPlacement(myShip, currentPlayer) {
     const directions = [
@@ -229,6 +259,8 @@ class GameManager {
   }
   randomizeBoard(playerToRandomize) {
     playerToRandomize.playerBoard.initializeGrid();
+    playerToRandomize.playerBoard.resetShipPlacement();
+    this.randomizedClicked = true;
     this.randomShipPlacement(
       playerToRandomize.playerBoard.carrier,
       playerToRandomize,
@@ -250,6 +282,35 @@ class GameManager {
       playerToRandomize,
     );
   }
+  confirmPlacement() {
+    if (this.randomizedClicked === false) {
+      this.randomizeBoard(this.playersTurn === 1 ? this.player1 : this.player2);
+      this.displayBoard(
+        this.playersTurn === 1 ? this.player1 : this.player2, //current player
+        this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
+      );
+    }
+    this.randomizerName.textContent = this.player2.playerName;
+
+    this.randomizedClicked = false;
+    if (this.playersTurn === 1) {
+      this.player1Placed = true;
+    } else {
+      this.player2Placed = true;
+    }
+    this.changeTurns();
+
+    if (this.player2.isComputer === true && this.player2Placed === false) {
+      this.randomizeBoard(this.player2);
+      this.confirmPlacement();
+    }
+    if (this.player1Placed === true && this.player2Placed === true) {
+      //hide the boat randomizer
+      this.changeTurnContainer.classList.remove("open-container");
+
+      this.boatRandomizeContainer.classList.add("hidden");
+    }
+  }
   populateBoard() {
     //populates using (y,x) coordinates
     this.randomizeBoard(this.player1);
@@ -259,6 +320,9 @@ class GameManager {
     playerShipsText.textContent = `${currentPlayer.playerName}'s Ships`;
     playerShotsText.textContent = `${currentPlayer.playerName}'s Shots`;
     this.currentTurnTextbox.textContent = `${currentPlayer.playerName}`;
+    if (this.player2.isComputer === false || this.playersTurn === 1) {
+      this.updateBoatSummary();
+    }
     for (let y = 0; y < 10; y++) {
       for (let x = 0; x < 10; x++) {
         //erase all class list on ship board
@@ -340,6 +404,12 @@ class GameManager {
     );
   }
   updateBoatStatus(boat, boatStatus, boatText, hitsLeftText) {
+    //reset values first since it might swap players
+    hitsLeftText.textContent = `( ${boat.myLength})`;
+    boatStatus.classList.remove("boat-sunk");
+    boatText.classList.remove("crossed-out");
+    boatStatus.classList.remove("boat-hurt");
+
     hitsLeftText.textContent = `( ${boat.hitsLeft()})`;
     if (boat.hitsLeft() === 0) {
       boatStatus.classList.add("boat-sunk");

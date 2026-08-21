@@ -40,6 +40,14 @@ export class Gameboard {
     }
     return "available";
   }
+  resetShipPlacement() {
+    this.shipList = [];
+    this.carrier.isPlaced = false;
+    this.battleship.isPlaced = false;
+    this.cruiser.isPlaced = false;
+    this.submarine.isPlaced = false;
+    this.destroyer.isPlaced = false;
+  }
   placeShip(myShip, myPos) {
     let [posY, posX] = myPos;
     //check if ship goes off grid of position depending on direction placed
