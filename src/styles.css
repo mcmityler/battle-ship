@@ -220,12 +220,20 @@ body {
   grid-row: 2/3;
   height: 80px;
 
-  animation: change-container-anim 0.7s backwards alternate-reverse 1;
+  animation: close-change-container 0.25s backwards alternate-reverse 1;
 }
 .open-container {
-  animation: change-container-anim 0.7s forwards alternate 1;
+  animation: open-change-container 0.25s forwards alternate 1;
 }
-@keyframes change-container-anim {
+@keyframes open-change-container {
+  from {
+    height: 80px;
+  }
+  to {
+    height: 150px;
+  }
+}
+@keyframes close-change-container {
   from {
     height: 80px;
   }

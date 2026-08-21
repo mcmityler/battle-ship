@@ -186,7 +186,7 @@ class GameManager {
 
       if (this.player2.isComputer === false) {
         this.changeTurnContainer.classList.add("open-container");
-        setTimeout(700, this.changeTurnButton.classList.remove("hidden"));
+        setTimeout(() => this.changeTurnButton.classList.remove("hidden"), 200);
         this.nextTurn = true;
       } else {
         //Make a computer move here
@@ -306,8 +306,6 @@ class GameManager {
     }
     if (this.player1Placed === true && this.player2Placed === true) {
       //hide the boat randomizer
-      this.changeTurnContainer.classList.remove("open-container");
-
       this.boatRandomizeContainer.classList.add("hidden");
     }
   }
