@@ -11,6 +11,9 @@ export class Ship {
     this.numHits++;
     return this.numHits;
   }
+  hitsLeft() {
+    return this.myLength - this.numHits;
+  }
   checkSunk() {
     if (this.numHits >= this.myLength) {
       return true;

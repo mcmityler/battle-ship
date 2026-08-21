@@ -25,11 +25,13 @@ body {
   display: grid;
   grid-template-columns: 1fr 400px 1fr;
   grid-template-rows: 50px 1fr;
-  gap: 10px;
+  row-gap: 30px;
+  column-gap: 10px;
 }
 .main-title-container {
   grid-column: 1/-1;
   justify-self: center;
+  margin-top: 20px;
 }
 
 /* Left Sidebar */
@@ -87,6 +89,9 @@ body {
 }
 .boat-sunk {
   background-color: red;
+}
+.crossed-out {
+  text-decoration: line-through;
 }
 .gameboard-container {
   grid-column: 2/3;
@@ -160,15 +165,22 @@ body {
 .confirm-placement-button,
 .turn-change-button {
   color: var(--dark-color);
-  font-size: 0.9rem;
+  font-size: 1rem;
   background-color: var(--orange);
   border: none;
   border-radius: 20px;
   margin-top: 10px;
   box-shadow: 2px 2px 3px var(--dark-color);
-  width: 160px;
+  width: 200px;
   height: 30px;
   transition: all 0.2s ease-in-out;
+}
+.random-button-container,
+.confirm-button-container,
+.turn-change-button-container {
+  display: grid;
+  width: 100%;
+  place-items: center;
 }
 .random-button-container:hover .random-placement-button,
 .confirm-button-container:hover .confirm-placement-button,

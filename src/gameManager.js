@@ -25,6 +25,26 @@ class GameManager {
       this.startGame(event),
     );
     this.currentTurnTextbox = document.querySelector(".current-turn");
+
+    this.carrierStatus = document.querySelector(".carrier-status");
+    this.carrierHitsLeft = document.querySelector(".carrier-hits-left");
+    this.carrierText = document.querySelector(".carrier-text");
+
+    this.battleshipStatus = document.querySelector(".battleship-status");
+    this.battleshipHitsLeft = document.querySelector(".battleship-hits-left");
+    this.battleshipText = document.querySelector(".battleship-text");
+
+    this.cruiserStatus = document.querySelector(".cruiser-status");
+    this.cruiserHitsLeft = document.querySelector(".cruiser-hits-left");
+    this.cruiserText = document.querySelector(".cruiser-text");
+
+    this.submarineStatus = document.querySelector(".submarine-status");
+    this.submarineHitsLeft = document.querySelector(".submarine-hits-left");
+    this.submarineText = document.querySelector(".submarine-text");
+
+    this.destroyerStatus = document.querySelector(".destroyer-status");
+    this.destroyerHitsLeft = document.querySelector(".destroyer-hits-left");
+    this.destroyerText = document.querySelector(".destroyer-text");
   }
   startGame(event) {
     // 1. Prevent the default browser page reload
@@ -124,12 +144,18 @@ class GameManager {
           shotResult = this.player1.playerBoard.receiveAttack([y, x]);
         }
       }
+      if (shotResult === "repeat") return; //ensure you cant hit same spot twice and waste a turn
+
       console.log(shotResult);
 
       this.displayBoard(
         this.playersTurn === 1 ? this.player1 : this.player2,
         this.playersTurn === 1 ? this.player2 : this.player1,
       );
+      if (shotResult !== "miss") {
+        this.updateBoatSummary();
+      }
+
       if (this.player2.isComputer === false) {
         this.changeTurnButton.classList.remove("hidden");
         this.nextTurn = true;
@@ -278,6 +304,49 @@ class GameManager {
       const [y, x] = element;
       this.shotBoard[y][x].classList.add("miss");
     });
+  }
+  updateBoatSummary() {
+    const currentOpponent =
+      this.playersTurn === 1 ? this.player2 : this.player1;
+    this.updateBoatStatus(
+      currentOpponent.playerBoard.carrier,
+      this.carrierStatus,
+      this.carrierText,
+      this.carrierHitsLeft,
+    );
+    this.updateBoatStatus(
+      currentOpponent.playerBoard.battleship,
+      this.cruiserStatus,
+      this.cruiserText,
+      this.cruiserHitsLeft,
+    );
+    this.updateBoatStatus(
+      currentOpponent.playerBoard.cruiser,
+      this.battleshipStatus,
+      this.battleshipText,
+      this.battleshipHitsLeft,
+    );
+    this.updateBoatStatus(
+      currentOpponent.playerBoard.submarine,
+      this.submarineStatus,
+      this.submarineText,
+      this.submarineHitsLeft,
+    );
+    this.updateBoatStatus(
+      currentOpponent.playerBoard.destroyer,
+      this.destroyerStatus,
+      this.destroyerText,
+      this.destroyerHitsLeft,
+    );
+  }
+  updateBoatStatus(boat, boatStatus, boatText, hitsLeftText) {
+    hitsLeftText.textContent = `( ${boat.hitsLeft()})`;
+    if (boat.hitsLeft() === 0) {
+      boatStatus.classList.add("boat-sunk");
+      boatText.classList.add("crossed-out");
+    } else if (boat.numHits > 0) {
+      boatStatus.classList.add("boat-hurt");
+    }
   }
 }
 // console.log(domReference);
