@@ -10,7 +10,7 @@
   --dark-green: #597575;
   --dark-color: #161d1d;
 
-  --green: #32a338;
+  --green: #30ca37;
   --dark-hit: #1e7422;
   --dark-miss: #be0101;
   --dark-empty: #c7c7c7;
@@ -20,6 +20,9 @@
   --greyed-out: #b1aeae;
   --grey-green: #55614e;
   --grey-red: #744c4a;
+  --grey-sunk: #608803;
+  --ship-color: #4b284d;
+  --sunk-color: #a7ee00;
 }
 * {
   margin: 0;
@@ -97,7 +100,7 @@ body {
   background-color: var(--orange);
 }
 .boat-sunk {
-  background-color: red;
+  background-color: var(--red);
 }
 .crossed-out {
   text-decoration: line-through;
@@ -144,16 +147,16 @@ body {
   cursor: pointer;
 }
 .ship {
-  background-color: grey;
+  background-color: var(--ship-color);
 }
 .hit {
-  background-color: green;
+  background-color: var(--green);
 }
 .miss {
-  background-color: red;
+  background-color: var(--red);
 }
 .sunk {
-  background-color: greenyellow;
+  background-color: var(--sunk-color);
 }
 .right-sidebar-container {
   display: grid;
@@ -316,6 +319,9 @@ body {
 }
 .greyed-out.miss {
   background-color: var(--grey-red);
+}
+.greyed-out.sunk {
+  background-color: var(--grey-sunk);
 }
 /* Dialog Styling */
 #new-game-dialog {
