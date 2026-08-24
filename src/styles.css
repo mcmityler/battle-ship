@@ -11,8 +11,15 @@
   --dark-color: #161d1d;
 
   --green: #32a338;
+  --dark-hit: #1e7422;
+  --dark-miss: #be0101;
+  --dark-empty: #c7c7c7;
+  --dark-click: #909290;
   --red: #ff0000;
   --dark-red: #521700;
+  --greyed-out: #b1aeae;
+  --grey-green: #55614e;
+  --grey-red: #744c4a;
 }
 * {
   margin: 0;
@@ -116,6 +123,22 @@ body {
 .game-button {
   width: 30px;
   height: 30px;
+  border: none;
+  border-radius: 5px;
+  margin: 1px;
+}
+
+.game-button:hover {
+  background-color: var(--dark-empty);
+}
+.game-button.hit:hover {
+  background-color: var(--dark-hit);
+}
+.game-button.miss:hover {
+  background-color: var(--dark-miss);
+}
+.game-button:active {
+  background-color: var(--dark-click);
 }
 .hover-pointer:hover {
   cursor: pointer;
@@ -284,6 +307,15 @@ body {
 .p2-shot-tracker {
   font-size: 1.1rem;
   font-weight: bold;
+}
+.greyed-out {
+  background-color: var(--greyed-out);
+}
+.greyed-out.hit {
+  background-color: var(--grey-green);
+}
+.greyed-out.miss {
+  background-color: var(--grey-red);
 }
 /* Dialog Styling */
 #new-game-dialog {

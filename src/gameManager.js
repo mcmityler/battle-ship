@@ -108,6 +108,15 @@ class GameManager {
       this.playersTurn === 1 ? this.player1 : this.player2, //current player
       this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
     );
+
+    if (this.playersTurn === 1) {
+      this.currentTurnTextbox.classList.add("p1-color");
+      this.currentTurnTextbox.classList.remove("p2-color");
+    } else if (this.playersTurn === 2) {
+      this.currentTurnTextbox.classList.remove("p1-color");
+      this.currentTurnTextbox.classList.add("p2-color");
+    }
+
     this.randomizerName.textContent = this.player1.playerName;
 
     //close inputs
@@ -198,11 +207,19 @@ class GameManager {
   }
   computerMove() {
     this.changeTurns();
+    this.greyOut();
     this.gridcellClick(
       `${Math.floor(Math.random() * 10)} ${Math.floor(
         Math.random() * 10,
       )} shot`,
     );
+  }
+  greyOut() {
+    for (let y = 0; y < 10; y++) {
+      for (let x = 0; x < 10; x++) {
+        this.shotBoard[y][x].classList.toggle("greyed-out");
+      }
+    }
   }
   computerHit() {
     let hit = false;
@@ -230,11 +247,19 @@ class GameManager {
   }
   changeTurns() {
     this.playersTurn === 1 ? (this.playersTurn = 2) : (this.playersTurn = 1);
-    if (this.player2.isComputer === false) {
+    console.log("CHANGE TURN" + this.playersTurn);
+    if (this.player2.isComputer === false || this.playersTurn === 1) {
       this.displayBoard(
         this.playersTurn === 1 ? this.player1 : this.player2, //current player
         this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
       );
+    }
+    if (this.playersTurn === 1) {
+      this.currentTurnTextbox.classList.add("p1-color");
+      this.currentTurnTextbox.classList.remove("p2-color");
+    } else if (this.playersTurn === 2) {
+      this.currentTurnTextbox.classList.remove("p1-color");
+      this.currentTurnTextbox.classList.add("p2-color");
     }
     this.nextTurn = false;
     this.changeTurnContainer.classList.remove("open-container");
@@ -299,8 +324,8 @@ class GameManager {
       this.player2Placed = true;
     }
     this.changeTurns();
-
     if (this.player2.isComputer === true && this.player2Placed === false) {
+      //if computer randomize and confirm placement tos start game
       this.randomizeBoard(this.player2);
       this.confirmPlacement();
     }
@@ -318,14 +343,7 @@ class GameManager {
     playerShipsText.textContent = `${currentPlayer.playerName}'s Ships`;
     playerShotsText.textContent = `${currentPlayer.playerName}'s Shots`;
     this.currentTurnTextbox.textContent = `${currentPlayer.playerName}`;
-    if (this.playersTurn === 1) {
-      this.currentTurnTextbox.classList.add("p1-color");
-      this.currentTurnTextbox.classList.remove("p2-color");
-    }
-    if (this.playersTurn === 2) {
-      this.currentTurnTextbox.classList.remove("p1-color");
-      this.currentTurnTextbox.classList.add("p2-color");
-    }
+
     if (this.player2.isComputer === false || this.playersTurn === 1) {
       this.updateBoatSummary();
     }
