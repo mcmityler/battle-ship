@@ -318,6 +318,14 @@ class GameManager {
     playerShipsText.textContent = `${currentPlayer.playerName}'s Ships`;
     playerShotsText.textContent = `${currentPlayer.playerName}'s Shots`;
     this.currentTurnTextbox.textContent = `${currentPlayer.playerName}`;
+    if (this.playersTurn === 1) {
+      this.currentTurnTextbox.classList.add("p1-color");
+      this.currentTurnTextbox.classList.remove("p2-color");
+    }
+    if (this.playersTurn === 2) {
+      this.currentTurnTextbox.classList.remove("p1-color");
+      this.currentTurnTextbox.classList.add("p2-color");
+    }
     if (this.player2.isComputer === false || this.playersTurn === 1) {
       this.updateBoatSummary();
     }

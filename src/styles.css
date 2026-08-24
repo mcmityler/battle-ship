@@ -10,7 +10,7 @@
   --dark-green: #597575;
   --dark-color: #161d1d;
 
-  --green: #46b64c;
+  --green: #32a338;
   --red: #ff0000;
   --dark-red: #521700;
 }
@@ -244,6 +244,13 @@ body {
 .current-turn {
   font-size: 1.5rem;
   text-align: center;
+  font-weight: bold;
+}
+.p1-color {
+  color: var(--green);
+}
+.p2-color {
+  color: var(--red);
 }
 .current-turn-text {
   text-align: center;
