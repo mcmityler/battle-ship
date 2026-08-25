@@ -434,10 +434,10 @@ dialog {
   opacity: 0;
   transform: scaleY(0);
   transition:
-    opacity 0.7s ease-out,
-    transform 0.7s ease-out,
-    overlay 0.7s ease-out allow-discrete,
-    display 0.7s ease-out allow-discrete;
+    opacity 0.3s ease-out,
+    transform 0.3s ease-out,
+    overlay 0.3s ease-out allow-discrete,
+    display 0.3s ease-out allow-discrete;
   /* Equivalent to
   transition: all 0.7s allow-discrete; */
 }

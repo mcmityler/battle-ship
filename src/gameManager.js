@@ -7,6 +7,7 @@ const playerShipsText = document.querySelector(".player-ships");
 const playerShotsText = document.querySelector(".player-shots");
 class GameManager {
   constructor() {
+    //variables
     this.player1 = new Player();
     this.player2 = new Player();
     this.shipBoard = [];
@@ -19,21 +20,25 @@ class GameManager {
     this.player2Placed = false; // ^
     this.randomizedClicked = false; // has the player randomized the board once
 
-    this.changeTurnButton = document.querySelector(".turn-change-button");
-    this.changeTurnButton.classList.add("hidden");
-
-    this.changeTurnButton.addEventListener("click", () => this.changeTurns());
-
+    //references to DOM elements
+    this.initHTMLReferences();
+  }
+  initHTMLReferences() {
+    //new game dialog
     this.startGameForm = document.getElementById("new-game-form");
     this.startGameForm.addEventListener("submit", (event) =>
       this.startGame(event),
     );
+    //click to continue dialog
+    this.clickDialog = document.getElementById("click-dialog");
+    this.passText = document.querySelector(".pass-text");
+    this.clickButton = document.querySelector(".click-button");
+    this.clickButton.addEventListener("click", () => this.clickToContinue());
 
-    this.initHTMLReferences();
-  }
-  initHTMLReferences() {
-    this.currentTurnTextbox = document.querySelector(".current-turn");
+    //Game over dialog
+    console.log("put game over dialog references here");
 
+    //boat status summary section
     this.carrierStatus = document.querySelector(".carrier-status");
     this.carrierHitsLeft = document.querySelector(".carrier-hits-left");
     this.carrierText = document.querySelector(".carrier-text");
@@ -54,9 +59,13 @@ class GameManager {
     this.destroyerHitsLeft = document.querySelector(".destroyer-hits-left");
     this.destroyerText = document.querySelector(".destroyer-text");
 
+    //randomize boat section
     this.boatRandomizeContainer = document.querySelector(
       ".boat-swap-container",
     );
+
+    this.randomizerName = document.querySelector(".pName-randomizer");
+
     this.randomizeButton = document.querySelector(".random-placement-button");
     this.randomizeButton.addEventListener("click", () => {
       this.randomizeBoard(this.playersTurn === 1 ? this.player1 : this.player2);
@@ -65,14 +74,25 @@ class GameManager {
         this.playersTurn === 1 ? this.player2 : this.player1,
       );
     });
+
     this.confirmButton = document.querySelector(".confirm-placement-button");
     this.confirmButton.addEventListener("click", () => this.confirmPlacement());
 
-    this.randomizerName = document.querySelector(".pName-randomizer");
+    //change turn section
+    this.currentTurnTextbox = document.querySelector(".current-turn");
+
+    this.changeTurnButton = document.querySelector(".turn-change-button");
+    this.changeTurnButton.classList.add("hidden");
+    this.changeTurnButton.addEventListener("click", () =>
+      this.changeTurns(true),
+    );
+
     this.changeTurnContainer = document.querySelector(
       ".change-turns-container",
     );
     this.changeTurnContainer.classList.remove("open-container");
+
+    //Player shot history section
     this.p1Shots = document.querySelector(".p1-shots");
     this.p2Shots = document.querySelector(".p2-shots");
   }
@@ -256,14 +276,21 @@ class GameManager {
     //done making a move, user can now strike
     this.computerThinking = false;
   }
-  changeTurns() {
+  changeTurns(buttonClick = false) {
     this.playersTurn === 1 ? (this.playersTurn = 2) : (this.playersTurn = 1);
     console.log("CHANGE TURN" + this.playersTurn);
-    if (this.player2.isComputer === false || this.playersTurn === 1) {
+    if (
+      this.player2.isComputer === false ||
+      (this.playersTurn === 1 && buttonClick === false)
+    ) {
       this.displayBoard(
         this.playersTurn === 1 ? this.player1 : this.player2, //current player
         this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
       );
+    }
+    if (buttonClick === true) {
+      //open click to continue and clear the boards
+      this.clickDialog.showModal();
     }
     if (this.playersTurn === 1) {
       this.currentTurnTextbox.classList.add("p1-color");
@@ -276,6 +303,9 @@ class GameManager {
     this.changeTurnContainer.classList.remove("open-container");
 
     this.changeTurnButton.classList.add("hidden");
+  }
+  clickToContinue() {
+    this.clickDialog.close();
   }
   randomShipPlacement(myShip, currentPlayer) {
     const directions = [
