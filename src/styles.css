@@ -311,6 +311,11 @@ body {
   font-size: 1.1rem;
   font-weight: bold;
 }
+.p1-shots,
+.p2-shots {
+  font-size: 0.9rem;
+  overflow: auto;
+}
 .greyed-out {
   background-color: var(--greyed-out);
 }

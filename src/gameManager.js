@@ -73,6 +73,8 @@ class GameManager {
       ".change-turns-container",
     );
     this.changeTurnContainer.classList.remove("open-container");
+    this.p1Shots = document.querySelector(".p1-shots");
+    this.p2Shots = document.querySelector(".p2-shots");
   }
   startGame(event) {
     // 1. Prevent the default browser page reload
@@ -118,6 +120,8 @@ class GameManager {
     }
 
     this.randomizerName.textContent = this.player1.playerName;
+    this.p1Shots.textContent = "";
+    this.p2Shots.textContent = "";
 
     //close inputs
     this.startGameForm.parentElement.parentElement.close();
@@ -192,11 +196,18 @@ class GameManager {
         this.playersTurn === 1 ? this.player1 : this.player2,
         this.playersTurn === 1 ? this.player2 : this.player1,
       );
-
+      //not a repeat and actually hit something so add it
+      if (this.playersTurn === 1) {
+        this.p1Shots.textContent += ` [${+x + 1},${+y + 1}]`;
+      }
       if (this.player2.isComputer === false) {
         this.changeTurnContainer.classList.add("open-container");
         setTimeout(() => this.changeTurnButton.classList.remove("hidden"), 200);
         this.nextTurn = true;
+
+        if (this.playersTurn === 2) {
+          this.p2Shots.textContent += ` [${+x + 1},${+y + 1}]`;
+        }
       } else {
         //Make a computer move here
         this.computerMove();
@@ -224,10 +235,9 @@ class GameManager {
   computerHit() {
     let hit = false;
     while (hit === false) {
-      let shotResult = this.player1.playerBoard.receiveAttack([
-        Math.floor(Math.random() * 10),
-        Math.floor(Math.random() * 10),
-      ]);
+      const x = Math.floor(Math.random() * 10);
+      const y = Math.floor(Math.random() * 10);
+      let shotResult = this.player1.playerBoard.receiveAttack([y, x]);
       console.log("computer hit");
       if (
         shotResult === "miss" ||
@@ -235,6 +245,7 @@ class GameManager {
         shotResult === "sunk"
       ) {
         hit = true;
+        this.p2Shots.textContent += ` [${x + 1},${y + 1}]`;
       }
     }
     this.displayBoard(this.player1, this.player2);
