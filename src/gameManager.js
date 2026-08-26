@@ -303,7 +303,6 @@ class GameManager {
 
     this.changeTurns();
 
-    this.currentTurnTextbox.textContent = `${this.player1.playerName}`;
     //done making a move, user can now strike
     this.computerThinking = false;
   }
@@ -400,8 +399,10 @@ class GameManager {
     }
     if (this.player2.isComputer === true && this.player2Placed === false) {
       //if computer randomize and confirm placement tos start game
+      this.changeTurns();
       this.randomizeBoard(this.player2);
       this.confirmPlacement();
+    } else if (this.player2.isComputer === true) {
       this.changeTurns();
     } else if (this.player2.isComputer === false || this.playersTurn === 1) {
       this.changeTurns(true);
