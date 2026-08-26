@@ -298,9 +298,10 @@ class GameManager {
         shotResult === "sunk"
       ) {
         hit = true;
-        this.p2Shots.textContent += ` [${x + 1},${y + 1}]`;
+        this.updateHitList(y, x);
       }
     }
+    //show CPU shot on Player 1 board
     this.displayBoard(this.player1, this.player2);
 
     this.changeTurns();
@@ -322,7 +323,6 @@ class GameManager {
 
     this.nextTurn = false;
     this.changeTurnContainer.classList.remove("open-container");
-
     this.changeTurnButton.classList.add("hidden");
   }
   clickToContinue() {
@@ -335,6 +335,7 @@ class GameManager {
     );
   }
   cleanBoard() {
+    //hides all board cell values between turns when playing PVP (to hide ship placement)
     for (let y = 0; y < 10; y++) {
       for (let x = 0; x < 10; x++) {
         this.shipBoard[y][x].classList = "game-button";
@@ -385,39 +386,39 @@ class GameManager {
   }
   confirmPlacement() {
     if (this.randomizedClicked === false) {
+      //if they only click confirm and didnt randomize first then do it for them automatically
       this.randomizeBoard(this.playersTurn === 1 ? this.player1 : this.player2);
       this.displayBoard(
         this.playersTurn === 1 ? this.player1 : this.player2, //current player
         this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
       );
     }
-    this.randomizerName.textContent = this.player2.playerName;
 
     this.randomizedClicked = false;
+
     if (this.playersTurn === 1) {
       this.player1Placed = true;
-    } else {
+    } else if (this.playersTurn === 2) {
       this.player2Placed = true;
     }
-    if (this.player2.isComputer === true && this.player2Placed === false) {
-      //if computer randomize and confirm placement tos start game
-      this.changeTurns();
-      this.randomizeBoard(this.player2);
-      this.confirmPlacement();
-    } else if (this.player2.isComputer === true) {
+
+    if (this.player2.isComputer === true) {
       this.changeTurns();
     } else if (this.player2.isComputer === false || this.playersTurn === 1) {
       this.changeTurns(true);
     }
+
+    //on cpu vs player
+    if (this.player2.isComputer === true && this.player2Placed === false) {
+      //if computer randomize and confirm placement tos start game
+      this.randomizeBoard(this.player2);
+      this.confirmPlacement();
+    }
+
     if (this.player1Placed === true && this.player2Placed === true) {
       //hide the boat randomizer
       this.boatRandomizeContainer.classList.add("hidden");
     }
-  }
-  populateBoard() {
-    //populates using (y,x) coordinates
-    this.randomizeBoard(this.player1);
-    this.randomizeBoard(this.player2);
   }
   displayBoard(currentPlayer, opponentPlayer) {
     if (this.player2.isComputer === false || this.playersTurn === 1) {
@@ -519,5 +520,5 @@ class GameManager {
     }
   }
 }
-// console.log(domReference);
+
 const GM = new GameManager();
