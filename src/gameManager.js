@@ -21,9 +21,9 @@ class GameManager {
     this.randomizedClicked = false; // has the player randomized the board once
 
     //references to DOM elements
-    this.initHTMLReferences();
+    this.initDOMReferences();
   }
-  initHTMLReferences() {
+  initDOMReferences() {
     //new game dialog
     this.startGameForm = document.getElementById("new-game-form");
     this.startGameForm.addEventListener("submit", (event) =>
@@ -185,81 +185,96 @@ class GameManager {
     }
   }
   updatePlayerTexts() {
-    let currentPlayer = this.player1;
+    let currentPlayer = this.playersTurn === 1 ? this.player1 : this.player2;
+    this.currentTurnTextbox.classList.remove("p2-color");
+    this.currentTurnTextbox.classList.remove("p1-color");
+
     if (this.playersTurn === 1) {
       this.currentTurnTextbox.classList.add("p1-color");
-      this.currentTurnTextbox.classList.remove("p2-color");
     } else if (this.playersTurn === 2) {
       currentPlayer = this.player2;
-      this.currentTurnTextbox.classList.remove("p1-color");
       this.currentTurnTextbox.classList.add("p2-color");
     }
     this.randomizerName.textContent = currentPlayer.playerName;
+    this.currentTurnTextbox.textContent = `${currentPlayer.playerName}`;
 
     playerShipsText.textContent = `${currentPlayer.playerName}'s Ships`;
     playerShotsText.textContent = `${currentPlayer.playerName}'s Shots`;
+
+    this.passText.textContent = `Pass to ${currentPlayer.playerName}`;
+  }
+  updateHitList(y, x) {
+    if (this.playersTurn === 1) {
+      this.p1Shots.textContent += ` [${+x + 1},${+y + 1}]`;
+    } else {
+      this.p2Shots.textContent += ` [${+x + 1},${+y + 1}]`;
+    }
   }
   gridcellClick(myID) {
-    if (this.computerThinking === true) return;
-    if (this.player1Placed === false || this.player2Placed === false) return;
-    const [y, x, type] = myID.split(" ");
+    //click cell on game board - dissect ID into info of where was clicked
+    const [y, x, type] = myID.split(" "); // y = 0-9, x = 0-9, type = shot or ship
     console.log(`(Y:${y},X:${x}) - ${type}` + " cell clicked");
+
+    //computers turn skip click
+    if (this.computerThinking === true) return;
+
+    //if y,x-ship
+    if (type === "ship") {
+      this.gridShipClick(y, x);
+    }
+
+    //haven't placed both ship sides yet so skip shoot
+    if (this.player1Placed === false || this.player2Placed === false) return;
 
     //if y,x-shot
     if (type === "shot" && this.nextTurn === false) {
-      //result of what shot will be
-      let shotResult = "";
-      if (this.playersTurn === 1) {
-        //if P1 turn attack P2 board and vice versa
-        shotResult = this.player2.playerBoard.receiveAttack([y, x]);
-      } else if (this.playersTurn === 2) {
-        if (this.player2.isComputer === true) {
-          this.currentTurnTextbox.textContent = `Computer`;
-          //timeout to make it feel like the computer is doing something
-          this.computerThinking = true;
-          setTimeout(() => this.computerHit(), 400);
-
-          return;
-        } else {
-          shotResult = this.player1.playerBoard.receiveAttack([y, x]);
-        }
-      }
-      if (shotResult === "repeat") return; //ensure you cant hit same spot twice and waste a turn
-
-      console.log(shotResult);
-
-      this.displayBoard(
-        this.playersTurn === 1 ? this.player1 : this.player2,
-        this.playersTurn === 1 ? this.player2 : this.player1,
-      );
-      //not a repeat and actually hit something so add it
-      if (this.playersTurn === 1) {
-        this.p1Shots.textContent += ` [${+x + 1},${+y + 1}]`;
-      }
-      if (this.player2.isComputer === false) {
-        this.changeTurnContainer.classList.add("open-container");
-        setTimeout(() => this.changeTurnButton.classList.remove("hidden"), 200);
-        this.nextTurn = true;
-
-        if (this.playersTurn === 2) {
-          this.p2Shots.textContent += ` [${+x + 1},${+y + 1}]`;
-        }
-      } else {
-        //Make a computer move here
-        this.computerMove();
-      }
+      this.gridShotClick(y, x);
     }
-
-    //if y,x-ship
   }
-  computerMove() {
+  gridShipClick(y, x) {
+    console.log("place a ship");
+  }
+  gridShotClick(y, x) {
+    //result of shot -> repeat, miss, hit, sunk, sunkAll
+    let shotResult = "";
+    if (this.playersTurn === 1) {
+      //if P1 turn attack P2 board and vice versa
+      shotResult = this.player2.playerBoard.receiveAttack([y, x]);
+    } else if (this.playersTurn === 2) {
+      shotResult = this.player1.playerBoard.receiveAttack([y, x]);
+    }
+    if (shotResult === "repeat") return; //ensure you cant hit same spot twice and waste a turn
+
+    this.updateHitList(y, x);
+
+    this.displayBoard(
+      this.playersTurn === 1 ? this.player1 : this.player2,
+      this.playersTurn === 1 ? this.player2 : this.player1,
+    );
+    if (shotResult === "sunkAll") {
+      console.log("game over");
+      return;
+    }
+    if (this.player2.isComputer === false) {
+      this.showChangeTurns(); //show change turns section if pvp
+    } else {
+      //Make a computer move here if Player vs CPU
+      this.startComputerMove();
+    }
+  }
+  showChangeTurns() {
+    this.changeTurnContainer.classList.add("open-container");
+    //timeout so that it expands fully before button appears
+    setTimeout(() => this.changeTurnButton.classList.remove("hidden"), 200);
+    this.nextTurn = true;
+  }
+  startComputerMove() {
     this.changeTurns();
     this.greyOut();
-    this.gridcellClick(
-      `${Math.floor(Math.random() * 10)} ${Math.floor(
-        Math.random() * 10,
-      )} shot`,
-    );
+    this.currentTurnTextbox.textContent = `Computer`;
+    //timeout to make it feel like the computer is doing something
+    this.computerThinking = true;
+    setTimeout(() => this.computerHit(), 400);
   }
   greyOut() {
     for (let y = 0; y < 10; y++) {
@@ -292,29 +307,18 @@ class GameManager {
     //done making a move, user can now strike
     this.computerThinking = false;
   }
-  changeTurns(buttonClick = false) {
+  changeTurns(changeTurnButton = false) {
     this.playersTurn === 1 ? (this.playersTurn = 2) : (this.playersTurn = 1);
     console.log("CHANGE TURN" + this.playersTurn);
-    if (
-      this.player2.isComputer === false ||
-      (this.playersTurn === 1 && buttonClick === false)
-    ) {
-      this.displayBoard(
-        this.playersTurn === 1 ? this.player1 : this.player2, //current player
-        this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
-      );
-    }
-    if (buttonClick === true) {
+
+    if (changeTurnButton === true) {
       //open click to continue and clear the boards
       this.clickDialog.showModal();
+      //hide the board until click to continue
+      this.cleanBoard();
     }
-    if (this.playersTurn === 1) {
-      this.currentTurnTextbox.classList.add("p1-color");
-      this.currentTurnTextbox.classList.remove("p2-color");
-    } else if (this.playersTurn === 2) {
-      this.currentTurnTextbox.classList.remove("p1-color");
-      this.currentTurnTextbox.classList.add("p2-color");
-    }
+    this.updatePlayerTexts();
+
     this.nextTurn = false;
     this.changeTurnContainer.classList.remove("open-container");
 
@@ -322,6 +326,20 @@ class GameManager {
   }
   clickToContinue() {
     this.clickDialog.close();
+
+    //display the players ships and shots
+    this.displayBoard(
+      this.playersTurn === 1 ? this.player1 : this.player2, //current player
+      this.playersTurn === 1 ? this.player2 : this.player1, //opponent player
+    );
+  }
+  cleanBoard() {
+    for (let y = 0; y < 10; y++) {
+      for (let x = 0; x < 10; x++) {
+        this.shipBoard[y][x].classList = "game-button";
+        this.shotBoard[y][x].classList = "game-button";
+      }
+    }
   }
   randomShipPlacement(myShip, currentPlayer) {
     const directions = [
@@ -380,11 +398,13 @@ class GameManager {
     } else {
       this.player2Placed = true;
     }
-    this.changeTurns();
     if (this.player2.isComputer === true && this.player2Placed === false) {
       //if computer randomize and confirm placement tos start game
       this.randomizeBoard(this.player2);
       this.confirmPlacement();
+      this.changeTurns();
+    } else if (this.player2.isComputer === false || this.playersTurn === 1) {
+      this.changeTurns(true);
     }
     if (this.player1Placed === true && this.player2Placed === true) {
       //hide the boat randomizer
@@ -397,10 +417,6 @@ class GameManager {
     this.randomizeBoard(this.player2);
   }
   displayBoard(currentPlayer, opponentPlayer) {
-    playerShipsText.textContent = `${currentPlayer.playerName}'s Ships`;
-    playerShotsText.textContent = `${currentPlayer.playerName}'s Shots`;
-    this.currentTurnTextbox.textContent = `${currentPlayer.playerName}`;
-
     if (this.player2.isComputer === false || this.playersTurn === 1) {
       this.updateBoatSummary();
     }
