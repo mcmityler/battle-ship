@@ -198,8 +198,10 @@ class GameManager {
     this.randomizerName.textContent = currentPlayer.playerName;
     this.currentTurnTextbox.textContent = `${currentPlayer.playerName}`;
 
-    playerShipsText.textContent = `${currentPlayer.playerName}'s Ships`;
-    playerShotsText.textContent = `${currentPlayer.playerName}'s Shots`;
+    if (this.player2.isComputer === false || this.playersTurn === 1) {
+      playerShipsText.textContent = `${currentPlayer.playerName}'s Ships`;
+      playerShotsText.textContent = `${currentPlayer.playerName}'s Shots`;
+    }
 
     this.passText.textContent = `Pass to ${currentPlayer.playerName}`;
   }
