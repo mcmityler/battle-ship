@@ -28,7 +28,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  outline: red solid 1px;
+  /* outline: red solid 1px; */
 }
 body {
   background-color: var(--light-color);
@@ -329,7 +329,8 @@ body {
   background-color: var(--grey-sunk);
 }
 /* Dialog Styling */
-#click-dialog {
+#click-dialog,
+#game-over-dialog {
   background-color: var(--light-green);
   border: 5px solid var(--dark-green);
   border-radius: 20px;
@@ -343,7 +344,8 @@ body {
   min-width: 400px;
   height: 250px;
 }
-.click-container {
+.click-container,
+.win-container {
   display: grid;
   grid-template-rows: 1fr 1fr;
   align-items: center;
@@ -353,6 +355,22 @@ body {
   color: var(--dark-color);
   font-size: 2.2rem;
   padding-top: 40px;
+}
+
+.win-container h2 {
+  font-size: 2.2rem;
+  color: var(--dark-color);
+}
+.win-text-container {
+  padding-top: 40px;
+  display: grid;
+  grid-auto-flow: column;
+}
+.fa-trophy {
+  font-size: 2.2rem;
+  color: gold;
+  margin-right: 10px;
+  text-shadow: 1px 1px 12px black;
 }
 #new-game-dialog {
   background-color: var(--light-green);
@@ -368,8 +386,7 @@ body {
   min-width: 600px;
   height: 450px;
 }
-.dialog-container {
-}
+
 #new-game-form {
   display: grid;
   grid-template-rows: repeat(5, 60px);
@@ -392,7 +409,8 @@ body {
   font-size: 2rem;
 }
 .start-game-button,
-.click-button {
+.click-button,
+.play-again-button {
   width: 150px;
   height: 40px;
   border: none;
@@ -404,16 +422,19 @@ body {
   color: var(--dark-color);
 }
 .start-button-container:hover .start-game-button,
-.click-button-container:hover .click-button {
+.click-button-container:hover .click-button,
+.play-again-container:hover .play-again-button {
   transform: translateY(-3px);
   box-shadow: 2px 2px 7px var(--dark-color);
 }
 .start-game-button:hover,
-.click-button:hover {
+.click-button:hover,
+.play-again-button:hover {
   background-color: var(--orange);
 }
 .start-game-button:active,
-.click-button:active {
+.click-button:active,
+.play-again-button:active {
   background-color: var(--dark-orange);
 }
 

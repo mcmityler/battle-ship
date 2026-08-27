@@ -19,12 +19,13 @@ class GameManager {
     this.player1Placed = false; //has the player confirmed the placement of their ships
     this.player2Placed = false; // ^
     this.randomizedClicked = false; // has the player randomized the board once
-
+    this.gg = false;
     //references to DOM elements
     this.initDOMReferences();
   }
   initDOMReferences() {
     //new game dialog
+    this.newGameDialog = document.getElementById("new-game-dialog");
     this.startGameForm = document.getElementById("new-game-form");
     this.startGameForm.addEventListener("submit", (event) =>
       this.startGame(event),
@@ -95,6 +96,15 @@ class GameManager {
     //Player shot history section
     this.p1Shots = document.querySelector(".p1-shots");
     this.p2Shots = document.querySelector(".p2-shots");
+
+    this.gameOverDialog = document.getElementById("game-over-dialog");
+    this.winnerText = document.querySelector(".winner-text");
+    this.playAgainButton = document.querySelector(".play-again-button");
+    this.playAgainButton.addEventListener("click", () => {
+      //start a new game here
+      this.gameOverDialog.close();
+      this.newGameDialog.showModal();
+    });
   }
   startGame(event) {
     // 1. Prevent the default browser page reload
@@ -115,7 +125,7 @@ class GameManager {
     );
 
     //close inputs
-    this.startGameForm.parentElement.parentElement.close();
+    this.newGameDialog.close();
 
     this.startGameForm.reset(); //clear form inputs
   }
@@ -131,6 +141,8 @@ class GameManager {
     //reset player shot history text content
     this.p1Shots.textContent = "";
     this.p2Shots.textContent = "";
+    this.boatRandomizeContainer.classList.remove("hidden");
+    this.gg = false;
   }
   initPlayerNames(formData) {
     //set player 1 name (default: Player 1)
@@ -150,6 +162,8 @@ class GameManager {
     }
   }
   initializeGridButtons() {
+    shipRowContainer.replaceChildren();
+    shotRowContainer.replaceChildren();
     for (let y = 0; y < this.gridSize; y++) {
       //create rows to put buttons on in html
       const shipRow = document.createElement("div");
@@ -219,7 +233,7 @@ class GameManager {
 
     //computers turn skip click
     if (this.computerThinking === true) return;
-
+    if (this.gg === true) return;
     //if y,x-ship
     if (type === "ship") {
       this.gridShipClick(y, x);
@@ -255,11 +269,12 @@ class GameManager {
     );
     if (shotResult === "sunkAll") {
       console.log("game over");
+      this.gameOver();
       return;
     }
-    if (this.player2.isComputer === false) {
+    if (this.player2.isComputer === false && this.gg === false) {
       this.showChangeTurns(); //show change turns section if pvp
-    } else {
+    } else if (this.player2.isComputer === true && this.gg === false) {
       //Make a computer move here if Player vs CPU
       this.startComputerMove();
     }
@@ -287,10 +302,11 @@ class GameManager {
   }
   computerHit() {
     let hit = false;
+    let shotResult;
     while (hit === false) {
       const x = Math.floor(Math.random() * 10);
       const y = Math.floor(Math.random() * 10);
-      let shotResult = this.player1.playerBoard.receiveAttack([y, x]);
+      shotResult = this.player1.playerBoard.receiveAttack([y, x]);
       console.log("computer hit");
       if (
         shotResult === "miss" ||
@@ -299,6 +315,12 @@ class GameManager {
       ) {
         hit = true;
         this.updateHitList(y, x);
+      }
+      if (shotResult === "sunkAll") {
+        this.displayBoard(this.player1, this.player2);
+        this.gameOver();
+        this.updateHitList(y, x);
+        return;
       }
     }
     //show CPU shot on Player 1 board
@@ -518,6 +540,13 @@ class GameManager {
     } else if (boat.numHits > 0) {
       boatStatus.classList.add("boat-hurt");
     }
+  }
+  gameOver() {
+    this.gameOverDialog.showModal();
+    this.gg = true;
+    this.winnerText.textContent = `${
+      this.playersTurn === 1 ? this.player1.playerName : this.player2.playerName
+    } wins!`;
   }
 }
 
