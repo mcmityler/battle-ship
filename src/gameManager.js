@@ -27,6 +27,7 @@ class GameManager {
   initDOMReferences() {
     //new game dialog
     this.newGameDialog = document.getElementById("new-game-dialog");
+    this.newGameDialog.showModal();
     this.startGameForm = document.getElementById("new-game-form");
     this.startGameForm.addEventListener("submit", (event) =>
       this.startGame(event),
