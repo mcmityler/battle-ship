@@ -576,7 +576,6 @@ class GameManager {
 const GM = new GameManager();
 
 /* TO DO LIST
-  - Add a disclaimer that the Hard mode CPU doesn't exist yet
   - Hard mode CPU (goes diagonals until finds a ship and then it does around it until 
     it sinks that ship.. if it finds another ship add location to the list and after it 
     sinks the first one try sinking the next in the list)
