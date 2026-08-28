@@ -20,6 +20,7 @@ class GameManager {
     this.player2Placed = false; // ^
     this.randomizedClicked = false; // has the player randomized the board once
     this.gg = false;
+    this.computerDifficulty = "easy";
     //references to DOM elements
     this.initDOMReferences();
   }
@@ -105,6 +106,16 @@ class GameManager {
       this.gameOverDialog.close();
       this.newGameDialog.showModal();
     });
+
+    this.errorText = document.querySelector(".error-text");
+    this.easyDifficultySelector = document.getElementById("easy-difficulty");
+    this.easyDifficultySelector.addEventListener("change", () =>
+      this.changeComputerDifficulty(),
+    );
+    this.hardDifficultySelector = document.getElementById("hard-difficulty");
+    this.hardDifficultySelector.addEventListener("change", () =>
+      this.changeComputerDifficulty(),
+    );
   }
   startGame(event) {
     // 1. Prevent the default browser page reload
@@ -159,6 +170,18 @@ class GameManager {
       }
     } else {
       this.player2.playerName = "Computer";
+    }
+  }
+  changeComputerDifficulty() {
+    this.computerDifficulty === "easy"
+      ? (this.computerDifficulty = "hard")
+      : (this.computerDifficulty = "easy");
+
+    //ONLY NEEDED UNTIL HARD DIFFICULTY IS SET UP
+    console.log(this.computerDifficulty);
+    this.errorText.classList.add("hidden"); //hide error
+    if (this.computerDifficulty === "hard") {
+      this.errorText.classList.remove("hidden"); //show error
     }
   }
   initializeGridButtons() {
@@ -551,3 +574,14 @@ class GameManager {
 }
 
 const GM = new GameManager();
+
+/* TO DO LIST
+  - Add a disclaimer that the Hard mode CPU doesn't exist yet
+  - Hard mode CPU (goes diagonals until finds a ship and then it does around it until 
+    it sinks that ship.. if it finds another ship add location to the list and after it 
+    sinks the first one try sinking the next in the list)
+  - Drag and drop to place ships instead of randomizing if I want to get fancy.
+  - Legend what hit miss and your ships mean in ship / shot board section
+   (could be top right of asd ships section)
+  - Space or Enter Click to continue game on PVP
+*/

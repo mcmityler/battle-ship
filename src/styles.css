@@ -395,6 +395,12 @@ body {
   place-items: center;
   gap: 20px;
 }
+.error-text {
+  color: var(--sunk-color);
+  font-weight: bold;
+  position: absolute;
+  bottom: 170px;
+}
 .dialog-title-container,
 .main-title-container {
   display: flex;
